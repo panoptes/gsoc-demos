@@ -1,13 +1,48 @@
-#main-animation.expand{
-        z-index: 9999; 
-        width: 100%; 
-        height: 100%; 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
+body{
+    background-color:goldenrod;
 }
 
-/* .main-image{ 
-    display:block;
-    width:50%;
-}*/
+
+#mainCanvas{
+    border-radius: 1%;
+    height: auto;
+    width:100%;
+    padding: 1px;
+    background: white;
+    
+}
+
+#animationContainer{
+    background:black;
+    padding-top: 65px;
+    /* to compensate for space occupied by navbar */
+    padding-right:10vw;
+    padding-left:10vw;
+}
+
+#animationControls{
+    padding-bottom:5px;
+    padding-top:5px;
+}
+
+.navbarLogo{
+    width:32px;
+    height:32px;
+}
+
+#animationContainer.fullscreen{
+    z-index: 9999; 
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+ }
+ #mainCanvas.fullscreen{
+    z-index: 9999; 
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+ }

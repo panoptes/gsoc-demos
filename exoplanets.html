@@ -4,27 +4,85 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="intros/styles.css">
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="intros/styles.css">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <title>Index</title>
+    <title>An Introduction to Exoplanets</title>
   </head>
   <body>
     <!-- This is the page for introductory animations about exoplanets. The animation begins when
     a button is pressed. We begin from a star map of the milky way and zoom to a star system
     We also need this to be responsive. Let's give it a try-->
-    <div class="container">
-    <div class="row">
-      <div class="col-xl-12">
-      <img src="assets/vincentiu-night.jpg" class="main-image">
+    <!-- Navbar begins -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#"><img src="assets/logo-white.png" class="navbarLogo"></a>
+      <button id='menuButton' class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://projectpanoptes.org/">About Project PANOPTES</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              All Demos and Simulations
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item active" href="#">Introduction to Exoplanets</a>
+              <a class="dropdown-item" href="#">Detecting Exoplanets</a>
+              <a class="dropdown-item" href="#">Transit Light Curves</a>
+            </div>
+        </ul>
+      </div> 
+      
+    </nav>
+    <!-- Navbar ends -->
+    <!-- Implementing the animation in html5 canvas for greater control -->
+    <div id="animationContainer" class="mx-auto">
+      <canvas  id="mainCanvas"></canvas>
+      <div id="animationControls" class="btn-group">
+        <!-- Animation controls go here -->
+      <button type="button" class="btn btn-primary col-s-2">Play </button>
+      <button type="button" class="btn btn-primary col-s-2">Pause </button>
+      <button type="button" class="btn btn-primary col-s-2">1x </button>
+      <button type="button" class="btn btn-primary col-s-2">2x </button>
+      <button type="button" class="btn btn-primary col-xs-2">Full </button>
+      
       </div>
     </div>  
-  </div>
+    <!-- Placeholder -->
+    <div class="card mx-auto">
+        <div class="card-body">
+            <h4 class="card-title">Demos and Tools for Project PANOPTES</h4>
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapsedcontent">Introductory Animations <span class="badge badge-dark">Under Development</span></a>
+                <div class="collapse" id="collapsedcontent">
+                    <div class="card card-body">
+                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur cursus arcu velit, vel pulvinar tellus rhoncus vitae. Cras sapien dolor, consectetur sed cursus vitae, placerat nec ligula. Aenean tincidunt, tortor id malesuada mollis, leo augue pretium purus, ut tempor odio arcu ut nibh. Nullam cursus varius tortor non posuere. Fusce aliquet ut nunc quis efficitur. Nunc vitae finibus felis. Phasellus in sem nisi. Ut diam tellus, blandit a pulvinar a, vulputate non velit. Ut et felis lacus. Maecenas neque nibh, blandit quis sem sed, lobortis tristique turpis. Morbi ullamcorper, ipsum ut iaculis ultricies, magna risus sagittis mi, non luctus diam arcu sed lectus. Ut tincidunt posuere feugiat.</p> 
+                    </div>
+                </div>
+                <a href="#" class="list-group-item list-group-item-action">Dummy text<span></a>
+                <a href="#" class="list-group-item list-group-item-action">Predict TLC shape from Planet Characteristics <span class="badge badge-dark">Under Development</span></a>
+                <a href="#" class="list-group-item list-group-item-action">Interpreting Kepler data and simulator <span class="badge badge-dark">Under Development</span></a>
+                <a href="#" class="list-group-item list-group-item-action">Differential Timelapse generator from FITS images <span class="badge badge-dark">Under Development</span></a>
+            </div>
+            
+            
+            
+        </div>
+</div>
     
     
   </body>

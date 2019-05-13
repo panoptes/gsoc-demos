@@ -52,22 +52,24 @@
     </nav>
     <!-- Navbar ends -->
     <!-- Implementing the animation in html5 canvas for greater control -->
+    <div id="wrapper">
     <div id="animationContainer" class="mx-auto">
-      <canvas  id="mainCanvas"></canvas>
+      <canvas height="300px" width="500px" id="mainCanvas"></canvas>
       <div id="animationControls" class="btn-group">
         <!-- Animation controls go here -->
       <button type="button" class="btn btn-primary col-s-2">Play </button>
       <button type="button" class="btn btn-primary col-s-2">Pause </button>
       <button type="button" class="btn btn-primary col-s-2">1x </button>
       <button type="button" class="btn btn-primary col-s-2">2x </button>
-      <button type="button" class="btn btn-primary col-xs-2">Full </button>
+      <button type="button" class="btn btn-primary col-xs-2" onclick="myFullScreenToggler('#wrapper');myFullScreenToggler('#animationContainer');myFullScreenToggler('#mainCanvas')">Full </button>
       
       </div>
     </div>  
+    </div>
     <!-- Placeholder -->
     <div class="card mx-auto">
         <div class="card-body">
-            <h4 class="card-title">Demos and Tools for Project PANOPTES</h4>
+            <h4 class="card-title">Introduction to Exoplanets</h4>
             <div class="list-group">
                 <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapsedcontent">Introductory Animations <span class="badge badge-dark">Under Development</span></a>
                 <div class="collapse" id="collapsedcontent">

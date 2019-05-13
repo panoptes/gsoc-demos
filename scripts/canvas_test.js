@@ -3,8 +3,8 @@ let cx = canvas.getContext("2d");
 let img = document.createElement("img");
 
 
-function myFullScreenToggler(buttonId){
-  $(buttonId).toggleClass("fullscreen");
+function myFullScreenToggler(elementId){
+  $(elementId).toggleClass("fullscreen");
 }
 
 // Hide the menu on clicking outside it.
@@ -19,7 +19,8 @@ $(document).on('click', function(event) {
 
 // Testing the canvas
 cx.imageSmoothingEnabled=false;
-img.src = "assets/02.jpg";
+img.src = "assets/exoplanets/milkyway.jpg";
 img.addEventListener("load", () => {
   cx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.height);
+  // cx.drawImage(img,0,0,img.width,img.height);
 });

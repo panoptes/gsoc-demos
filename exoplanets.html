@@ -16,7 +16,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>An Introduction to Exoplanets</title>
     <!-- Custom Javascript Files  -->
-    <script src='scripts/canvas_test.js' defer></script>
+    <script src='scripts/hermite.js'></script>
+    <script src='scripts/initialize.js' defer></script>
+
   </head>
   <body>
     <!-- This is the page for introductory animations about exoplanets. The animation begins when
@@ -57,11 +59,11 @@
       <canvas height="300px" width="500px" id="mainCanvas"></canvas>
       <div id="animationControls" class="btn-group">
         <!-- Animation controls go here -->
-      <button type="button" class="btn btn-primary col-s-2">Play </button>
+      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="myAnimate();">Play </button>
       <button type="button" class="btn btn-primary col-s-2">Pause </button>
       <button type="button" class="btn btn-primary col-s-2">1x </button>
       <button type="button" class="btn btn-primary col-s-2">2x </button>
-      <button type="button" class="btn btn-primary col-xs-2" onclick="myFullScreenToggler('#wrapper');myFullScreenToggler('#animationContainer');myFullScreenToggler('#mainCanvas')">Full </button>
+      <button type="button" class="btn btn-primary col-xs-2" onclick="animateFullScreen();">Full </button>
       
       </div>
     </div>  

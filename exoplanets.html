@@ -17,7 +17,8 @@
     <title>An Introduction to Exoplanets</title>
     <!-- Custom Javascript Files  -->
     <script src='scripts/hermite.js'></script>
-    <script src='scripts/initialize.js' defer></script>
+    <script src='scripts/initialize.js'></script>
+    <script src='scripts/test.js' defer></script>
 
   </head>
   <body>
@@ -59,8 +60,7 @@
       <canvas height="300px" width="500px" id="mainCanvas"></canvas>
       <div id="animationControls" class="btn-group">
         <!-- Animation controls go here -->
-      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="myAnimate();">Play </button>
-      <button type="button" class="btn btn-primary col-s-2">Pause </button>
+      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();">Play </button>
       <button type="button" class="btn btn-primary col-s-2">1x </button>
       <button type="button" class="btn btn-primary col-s-2">2x </button>
       <button type="button" class="btn btn-primary col-xs-2" onclick="animateFullScreen();">Full </button>

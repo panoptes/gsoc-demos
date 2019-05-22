@@ -115,6 +115,9 @@ function textDraw(){
 function nextImage(){
     if (current >= frames.length ){
         cancelAnimationFrame(globalAnimationId);
+        playButton.setAttribute('onclick','play();');
+        playButton.innerHTML = 'Play ';
+        // if all frames have been played, ends animation and changes the Pause button to play button.
     }
     else if (typeof(frames[current])==="string"){
         console.log(frames[current]);

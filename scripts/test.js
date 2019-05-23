@@ -15,6 +15,7 @@ var next = nextCanvas.getContext('2d');
 var current = 0;
 var op = 1;
 var playButton = document.getElementById('playButton');
+let speedFactor = 1;
 
 let i;
 let loadedImgs =0 ;
@@ -74,7 +75,7 @@ frames.push("Iteration"+i)
 frames.push(imgs[0]);
 // ANIMATION FRAMES END
 function fade() {
-  op -= .01;
+  op -= .01 * speedFactor;
   
   last.clearRect(0, 0, width, height);
   last.globalAlpha = op;
@@ -100,7 +101,7 @@ function fade() {
 
   if (op <= 0) {
     current++;  
-    setTimeout(nextImage, 1500);}
+    setTimeout(nextImage, 1500/speedFactor);}
   else {
     requestAnimationFrame(fade);
   }  
@@ -109,7 +110,7 @@ function fade() {
 function textDraw(){
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText(frames[current],10,10);
-    setTimeout(nextImage, 1500);
+    setTimeout(nextImage, 1500/speedFactor);
     current++;
 }
 function nextImage(){
@@ -152,4 +153,15 @@ function pause(){
     }
     playButton.setAttribute('onclick','play();');
     playButton.innerHTML = 'Play ';
+}
+
+function setAnimationSpeedFactor(speed){
+    if (speed >= 0.5 && speed <= 2){
+        speedFactor = speed;
+    }
+    // Speed range to be withing 0.5 to 2
+    // Just a precaution
+    else{
+        console.log("Please set speed within 0.5 and 2");
+    }
 }

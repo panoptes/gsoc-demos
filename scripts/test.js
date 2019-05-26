@@ -5,6 +5,7 @@ var img = document.createElement("img");
 var canvas = document.getElementById("mainCanvas");
 var animContainer = document.getElementById('animationContainer');
 var globalAnimationId ;
+var fullScreenElement;
 
 var ctx = canvas.getContext('2d');
 var lastCanvas = canvas.cloneNode(true);
@@ -16,6 +17,7 @@ var next = nextCanvas.getContext('2d');
 var current = 0;
 var op = 1;
 var playButton = document.getElementById('playButton');
+var fullScreenButton = document.getElementById('fullScreenButton');
 let speedFactor = 1;
 var timer;
 
@@ -190,17 +192,18 @@ function customRequestFullScreen(){
       }
       
     screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen);    
-    resampleAllCanvas();
+    $('#fullScreenButton').attr('onclick','customExitFullScreen();');
+    $('#fullScreenButton').html('Exit Full Screen');
 }
 
 function toggleFullScreen(){
     //Called when promise returns from customRequestFullScreen
-    $('#animationContainer').toggleClass('fullscreen');
-    $('#mainCanvas').toggleClass('fullscreen');
-    $('#animationControls').toggleClass('fullscreen');
-    $('#mainCanvas').mousemove(hideControls);
+    $('#animationContainer').addClass('fullscreen');
+    $('#mainCanvas').addClass('fullscreen');
+    $('#animationControls').addClass('fullscreen');
+    $('#mainCanvas').on('mousemove',hideControls);
     $('#mainCanvas').on('touchstart',hideControls);
-    resampleAllCanvas();
+
 }
 
 let hideControls= function(){
@@ -208,4 +211,45 @@ let hideControls= function(){
     clearTimeout(timer);
     timer = setTimeout(function(){$('#animationControls').fadeOut();},1000);
 }
+
+function customExitFullScreen(){
+    document.exitFullscreen();
+    screen.orientation.unlock();
+    $('#animationContainer').removeClass('fullscreen');
+    $('#mainCanvas').removeClass('fullscreen');
+    $('#animationControls').removeClass('fullscreen');
+    clearTimeout(timer);
+    $('#mainCanvas').off();
+    $('#animationControls').css('display','inline-flex');
+    fullScreenButton.setAttribute('onclick','customRequestFullScreen();');
+    fullScreenButton.innerHTML = 'Full Screen';
+}
+
+// Exit full screen view by using the back button instead of the fullscreen button 
+var onFullScreenChange = function(){
+    fullScreenElement = document.fullscreenElement ||
+    document.msFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.webkitFullscreenElement;
+    if(!!fullScreenElement===false){
+    $('#animationContainer').removeClass('fullscreen');
+    $('#mainCanvas').removeClass('fullscreen');
+    $('#animationControls').removeClass('fullscreen');
+    clearTimeout(timer);
+    $('#mainCanvas').off();
+    $('#animationControls').css('display','inline-flex');
+    fullScreenButton.setAttribute('onclick','customRequestFullScreen();');
+    fullScreenButton.innerHTML = 'Full Screen';
+    }
+    resampleAllCanvas();
+}
+
+if (document.onfullscreenchange === null)
+	document.onfullscreenchange = onFullScreenChange;
+else if (document.onmsfullscreenchange === null)
+	document.onmsfullscreenchange = onFullScreenChange;
+else if (document.onmozfullscreenchange === null)
+	document.onmozfullscreenchange = onFullScreenChange;
+else if (document.onwebkitfullscreenchange === null)
+	document.onwebkitfullscreenchange = onFullScreenChange;
 

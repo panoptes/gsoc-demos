@@ -5,17 +5,14 @@ body{
 
 #mainCanvas{
     border-radius: 1%;
-    height: auto;
+    height: 250px;
     width:100%;
     padding: 1px;
     background: white;
-    /* image-rendering: -moz-crisp-edges;     */
-    /* image-rendering: -webkit-crisp-edges;  */
-    /* image-rendering: pixelated; */
 }
 
 #animationContainer{
-    background:blue;
+    background:black;
     padding-top: 65px;
     /* to compensate for space occupied by navbar */
     padding-right:5vw;
@@ -29,6 +26,10 @@ body{
     /* to compensate for space occupied by navbar */
     padding-right:10vw;
     padding-left:10vw;
+}
+#mainCanvas{
+    height: 500px;
+    width:100%;
 }
 }
 

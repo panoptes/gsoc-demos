@@ -51,6 +51,9 @@ for(i = 0;i<imgPaths.length;i++){
 }
 // Also resize and resample temporary canvas elements
 // Resize
+let resampleAllCanvas=function(){
+height = $('#mainCanvas').height();
+width = $('#mainCanvas').width();
 lastCanvas.height = height;
 lastCanvas.width = width;
 
@@ -60,12 +63,12 @@ nextCanvas.width = width;
 HERMITE.resample_single(canvas, width, height, true);
 HERMITE.resample_single(lastCanvas, width, height, true);
 HERMITE.resample_single(nextCanvas, width, height, true);
-
+}
 img.src=imgs[1].src;
 img.onload = function(){
 ctx.drawImage(img,0,0,img.width,img.height,0,0,width,height);
 }
-
+resampleAllCanvas();
 // ANIMATION FRAMES
 for(i=0;i<5;i++){
   frames.push("Iteration"+i);
@@ -187,6 +190,7 @@ function customRequestFullScreen(){
       }
       
     screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen);    
+    resampleAllCanvas();
 }
 
 function toggleFullScreen(){
@@ -196,10 +200,10 @@ function toggleFullScreen(){
     $('#animationControls').toggleClass('fullscreen');
     $('#mainCanvas').mousemove(hideControls);
     $('#mainCanvas').on('touchstart',hideControls);
-    
+    resampleAllCanvas();
 }
 
-hideControls= function(){
+let hideControls= function(){
     $('#animationControls').css('display','inline-flex');
     clearTimeout(timer);
     timer = setTimeout(function(){$('#animationControls').fadeOut();},1000);

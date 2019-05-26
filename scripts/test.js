@@ -3,6 +3,7 @@ var frames = [];
 var imgPaths = [];
 var img = document.createElement("img");
 var canvas = document.getElementById("mainCanvas");
+var animContainer = document.getElementById('animationContainer');
 var globalAnimationId ;
 
 var ctx = canvas.getContext('2d');
@@ -16,6 +17,7 @@ var current = 0;
 var op = 1;
 var playButton = document.getElementById('playButton');
 let speedFactor = 1;
+var timer;
 
 let i;
 let loadedImgs =0 ;
@@ -74,6 +76,8 @@ frames.push("Iteration"+i)
 frames.push("Iteration"+i)
 frames.push(imgs[0]);
 // ANIMATION FRAMES END
+
+/* CANVAS ANIMATION FUNCTIONS */
 function fade() {
   op -= .01 * speedFactor;
   
@@ -113,6 +117,7 @@ function textDraw(){
     setTimeout(nextImage, 1500/speedFactor);
     current++;
 }
+
 function nextImage(){
     if (current >= frames.length ){
         cancelAnimationFrame(globalAnimationId);
@@ -131,7 +136,8 @@ function nextImage(){
         // current incremented in fade()
     }
 }
-
+/* CANVAS ANIMATION FUNCTIONS END */
+/* Play and Pause Animation. Bound to play button */
 function play(){
     // restart if animation completed 
     if(current>frames.length){
@@ -154,14 +160,48 @@ function pause(){
     playButton.setAttribute('onclick','play();');
     playButton.innerHTML = 'Play ';
 }
-
+/* Play and Pause ended */
+/* SPEED BUTTON */
 function setAnimationSpeedFactor(speed){
     if (speed >= 0.5 && speed <= 2){
         speedFactor = speed;
     }
-    // Speed range to be withing 0.5 to 2
+    // Speed range to be within 0.5 to 2
     // Just a precaution
     else{
         console.log("Please set speed within 0.5 and 2");
     }
 }
+
+/* Full Screen Controls*/ 
+function customRequestFullScreen(){
+    
+    if (animContainer.requestFullscreen) {
+        animContainer.requestFullscreen();
+      } else if (animContainer.mozRequestFullScreen) { /* Firefox */
+        animContainer.mozRequestFullScreen();
+      } else if (animContainer.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        animContainer.webkitRequestFullscreen();
+      } else if (animContainer.msRequestFullscreen) { /* IE/Edge */
+        animContainer.msRequestFullscreen();
+      }
+      
+    screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen);    
+}
+
+function toggleFullScreen(){
+    //Called when promise returns from customRequestFullScreen
+    $('#animationContainer').toggleClass('fullscreen');
+    $('#mainCanvas').toggleClass('fullscreen');
+    $('#animationControls').toggleClass('fullscreen');
+    $('#mainCanvas').mousemove(hideControls);
+    $('#mainCanvas').on('touchstart',hideControls);
+    
+}
+
+hideControls= function(){
+    $('#animationControls').css('display','inline-flex');
+    clearTimeout(timer);
+    timer = setTimeout(function(){$('#animationControls').fadeOut();},1000);
+}
+

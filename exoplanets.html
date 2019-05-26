@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="intros/styles.css">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>An Introduction to Exoplanets</title>
@@ -63,7 +63,7 @@
       <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();">Play </button>
       <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(1);">1x </button>
       <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(2);">2x </button>
-      <button type="button" class="btn btn-primary col-xs-2" onclick="animateFullScreen();">Full </button>
+      <button type="button" class="btn btn-primary col-xs-2" onclick="customRequestFullScreen();">Full </button>
       
       </div>
     </div>  
@@ -79,7 +79,7 @@
                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur cursus arcu velit, vel pulvinar tellus rhoncus vitae. Cras sapien dolor, consectetur sed cursus vitae, placerat nec ligula. Aenean tincidunt, tortor id malesuada mollis, leo augue pretium purus, ut tempor odio arcu ut nibh. Nullam cursus varius tortor non posuere. Fusce aliquet ut nunc quis efficitur. Nunc vitae finibus felis. Phasellus in sem nisi. Ut diam tellus, blandit a pulvinar a, vulputate non velit. Ut et felis lacus. Maecenas neque nibh, blandit quis sem sed, lobortis tristique turpis. Morbi ullamcorper, ipsum ut iaculis ultricies, magna risus sagittis mi, non luctus diam arcu sed lectus. Ut tincidunt posuere feugiat.</p> 
                     </div>
                 </div>
-                <a href="#" class="list-group-item list-group-item-action">Dummy text<span></a>
+                <a href="#" class="list-group-item list-group-item-action" onclick="dummyFullScreen();">Dummy text<span></a>
                 <a href="#" class="list-group-item list-group-item-action">Predict TLC shape from Planet Characteristics <span class="badge badge-dark">Under Development</span></a>
                 <a href="#" class="list-group-item list-group-item-action">Interpreting Kepler data and simulator <span class="badge badge-dark">Under Development</span></a>
                 <a href="#" class="list-group-item list-group-item-action">Differential Timelapse generator from FITS images <span class="badge badge-dark">Under Development</span></a>

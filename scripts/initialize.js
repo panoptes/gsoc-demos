@@ -1,10 +1,6 @@
 
 
-function animateFullScreen(){
-  $("#wrapper").toggleClass("fullscreen");
-  $("#animationContainer").toggleClass("fullscreen");
-  $("#mainCanvas").toggleClass("fullscreen");
-}
+
 
 /* MENU--HIDE--ON--CLICK */
 $(document).on('click', function(event) {

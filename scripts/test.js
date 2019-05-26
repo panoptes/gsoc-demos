@@ -145,6 +145,7 @@ function nextImage(){
 /* Play and Pause Animation. Bound to play button */
 function play(){
     // restart if animation completed 
+    resampleAllCanvas();
     if(current>frames.length){
         current=cachedCurrent;
     }

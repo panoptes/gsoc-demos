@@ -6,6 +6,7 @@ var canvas = document.getElementById("mainCanvas");
 var animContainer = document.getElementById('animationContainer');
 var globalAnimationId ;
 var fullScreenElement;
+var folderName = 'assets/exoplanets/';
 
 var ctx = canvas.getContext('2d');
 var lastCanvas = canvas.cloneNode(true);
@@ -35,9 +36,17 @@ last.imageSmoothingEnabled = false;
 next.imageSmoothingEnabled = false;
 
 // CANVAS INTITIALIZE
-imgPaths.push('assets/vincentiu-night.jpg');
-imgPaths.push('assets/exoplanets/milkyway.jpg');
-imgPaths.push('assets/02.jpg');
+/* Load all images that are to be used in the animation*/ 
+imgPaths.push(folderName+'generic-space-tim-foster.jpg');
+imgPaths.push(folderName+'milkyway.jpg');
+imgPaths.push(folderName+'milkyway_sun.jpg');
+imgPaths.push(folderName+'solarsystem.jpg');
+imgPaths.push(folderName+'51pegasib.jpg');
+imgPaths.push(folderName+'trappist.jpg');
+imgPaths.push(folderName+'habitablezone.jpg');
+imgPaths.push(folderName+'kepler_186f.jpg');
+imgPaths.push(folderName+'kepler.jpg');
+imgPaths.push(folderName+'pan.png');
 
 for(i = 0;i<imgPaths.length;i++){
     let temp = new Image();
@@ -51,35 +60,55 @@ for(i = 0;i<imgPaths.length;i++){
         };
     temp.src = imgPaths[i]; 
 }
+/* When all  images are successfully loaded the Play button turns green */
 // Also resize and resample temporary canvas elements
-// Resize
+
 let resampleAllCanvas=function(){
-height = $('#mainCanvas').height();
-width = $('#mainCanvas').width();
-lastCanvas.height = height;
-lastCanvas.width = width;
+    height = $('#mainCanvas').height();
+    width = $('#mainCanvas').width();
+    lastCanvas.height = height;
+    lastCanvas.width = width;
 
-nextCanvas.height = height;
-nextCanvas.width = width;
+    nextCanvas.height = height;
+    nextCanvas.width = width;
 
-HERMITE.resample_single(canvas, width, height, true);
-HERMITE.resample_single(lastCanvas, width, height, true);
-HERMITE.resample_single(nextCanvas, width, height, true);
+    HERMITE.resample_single(canvas, width, height, true);
+    HERMITE.resample_single(lastCanvas, width, height, true);
+    HERMITE.resample_single(nextCanvas, width, height, true);
 }
+
 img.src=imgs[1].src;
 img.onload = function(){
-ctx.drawImage(img,0,0,img.width,img.height,0,0,width,height);
+    ctx.drawImage(img,0,0,img.width,img.height,0,0,width,height);
 }
 resampleAllCanvas();
+
 // ANIMATION FRAMES
-for(i=0;i<5;i++){
-  frames.push("Iteration"+i);
-  frames.push(imgs[i%3]);
-}
-frames.push("Iteration"+i)
-frames.push("Iteration"+i)
-frames.push("Iteration"+i)
 frames.push(imgs[0]);
+frames.push('Welcome! \n Today we’ll be learning about exoplanets !');
+frames.push(imgs[0]);
+frames.push('Our Universe is made up of countless galaxies like our Milky Way When we look up at the night sky, essentially everything we see is part of our Milky Way Galaxy.  This is an all sky image showing what our galaxy looks like.');
+frames.push(imgs[1]);
+frames.push('This is how our galaxy would appear to an outside observer. Our sun is one among the countless stars in our galaxy. Each bright speck is a star like our sun.');
+frames.push(imgs[2]);
+frames.push('Planets like our own Earth orbit the sun.');
+frames.push(imgs[3]);
+frames.push('Most of the countless stars in the universe also have planets orbiting them.These planets outside our solar system are called exoplanets.');
+frames.push(imgs[3]);
+frames.push('The first exoplanet to be discovered was 51 Pegasi b found orbiting a star like our sun.');
+frames.push(imgs[4]);
+frames.push('Since then over 3000 exoplanets have been discovered including star systems similar to our solar system');
+frames.push(imgs[5]);
+frames.push('The search for exoplanets is also tied to the search for extraterrestrial life.');
+frames.push(imgs[0]);
+frames.push('Each star has a region around it where water can exist in liquid form as on Earth. This region is called the habitable zone');
+frames.push(imgs[6]);
+frames.push('Water was an important factor in the evolution of life on Earth and its presence might be necessary to create the conditions capable of supporting life. ');
+frames.push(imgs[7]);
+frames.push('There are many projects both ground based and in space dedicated to this search. The most successful of them is the Kepler mission.');
+frames.push(imgs[8]);
+frames.push(imgs[9]);
+frames.push('Project PANOPTES is citizen science project that aims to make it easy for anyone to build a low cost, robotic telescope that can be used to detect transiting exoplanets.');
 // ANIMATION FRAMES END
 
 /* CANVAS ANIMATION FUNCTIONS */

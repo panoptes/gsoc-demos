@@ -29,6 +29,14 @@ let width = $('#mainCanvas').width();
 let tempCurrent = 0;
 let cachedCurrent = 0;
 
+let lines = [];
+let linesXOffset = [];
+let linesYOffset = [];
+let canvasText = '';
+let textWidth = 0;
+let fontSize = "10px";
+let fontStyle = "Arial"
+
 let HERMITE = new Hermite_class();
 
 ctx.imageSmoothingEnabled = false;
@@ -102,13 +110,14 @@ frames.push(imgs[5]);
 frames.push('The search for exoplanets is also tied to the search for extraterrestrial life.');
 frames.push(imgs[0]);
 frames.push('Each star has a region around it where water can exist in liquid form as on Earth. This region is called the habitable zone');
+frames.push(imgs[0]);
 frames.push(imgs[6]);
 frames.push('Water was an important factor in the evolution of life on Earth and its presence might be necessary to create the conditions capable of supporting life. ');
 frames.push(imgs[7]);
 frames.push('There are many projects both ground based and in space dedicated to this search. The most successful of them is the Kepler mission.');
 frames.push(imgs[8]);
 frames.push(imgs[9]);
-frames.push('Project PANOPTES is citizen science project that aims to make it easy for anyone to build a low cost, robotic telescope that can be used to detect transiting exoplanets.');
+frames.push('Project PANOPTES is a citizen science project that aims to make it easy for anyone to build a low cost, robotic telescope that can be used to detect transiting exoplanets.');
 // ANIMATION FRAMES END
 
 /* CANVAS ANIMATION FUNCTIONS */
@@ -145,10 +154,41 @@ function fade() {
   }  
 }
 
-function textDraw(){
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(frames[current],10,10);
-    setTimeout(nextImage, 1500/speedFactor);
+function textDraw(canvasId,canvasContext,canvasText,fontStyle="sans-serif"){
+    
+    let fontSize = $('#mainCanvas').attr('height')/25;
+    let words = canvasText.split(' ');
+    let line = '';
+    let xOffset = 0;
+    let yOffset = 0;
+    
+    resampleAllCanvas();
+    lines = [];
+    ctx.font = fontSize+"px "+fontStyle;
+    width = $('#'+canvasId).width();
+    height = $('#'+canvasId).height();
+    textWidth = canvasContext.measureText(canvasText).width;
+    // This loop splits the text into lines
+    for(i=0 ; i<words.length;i++){
+        if(canvasContext.measureText(line + words[i] + ' ').width<width){
+            line += words[i] + ' ';
+        }
+        else{
+            lines.push(line);
+            line = words[i]+' ';
+        }
+
+    }
+    lines.push(line);
+    // This loop prints the lines at the bottom and center-aligned.
+    for(i=0 ;i<lines.length;i++){
+        textWidth = ctx.measureText(lines[i]).width;
+        ctx.fillStyle = "#FFFFFF";
+        xOffset = (width-textWidth)/2;
+        yOffset = height-fontSize*(lines.length-i);
+        ctx.fillText(lines[i],xOffset,yOffset);
+    }
+    setTimeout(nextImage, 2000/speedFactor);
     current++;
 }
 
@@ -161,7 +201,7 @@ function nextImage(){
     }
     else if (typeof(frames[current])==="string"){
         console.log(frames[current]);
-        textDraw();
+        textDraw('mainCanvas',ctx,frames[current]);
         // current incremented in textDraw()
     }
     else{

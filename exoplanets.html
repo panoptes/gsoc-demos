@@ -61,7 +61,7 @@
       <canvas height="300px" width="500px" id="mainCanvas"></canvas>
       <div id="animationControls" class="btn-group">
         <!-- Animation controls go here -->
-      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();">Play </button>
+      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();"><i class="fa fa-play"></i> </button>
       <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(1);">1x </button>
       <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(2);">2x </button>
       <button type="button" class="btn btn-primary col-xs-2" id="fullScreenButton" onclick="customRequestFullScreen();">Full Screen</button>
@@ -72,18 +72,37 @@
     <!-- All text Content -->
     <div class="card mx-auto">
         <div class="card-body">
-            <h4 class="card-title">Introduction to Exoplanets</h4>
+            <h3 class="card-title">Introduction to Exoplanets</h3>
             <div class="list-group">
-                <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapsedcontent">Introductory Animations <span class="badge badge-dark">Under Development</span></a>
-                <div class="collapse" id="collapsedcontent">
-                    <div class="card card-body">
-                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur cursus arcu velit, vel pulvinar tellus rhoncus vitae. Cras sapien dolor, consectetur sed cursus vitae, placerat nec ligula. Aenean tincidunt, tortor id malesuada mollis, leo augue pretium purus, ut tempor odio arcu ut nibh. Nullam cursus varius tortor non posuere. Fusce aliquet ut nunc quis efficitur. Nunc vitae finibus felis. Phasellus in sem nisi. Ut diam tellus, blandit a pulvinar a, vulputate non velit. Ut et felis lacus. Maecenas neque nibh, blandit quis sem sed, lobortis tristique turpis. Morbi ullamcorper, ipsum ut iaculis ultricies, magna risus sagittis mi, non luctus diam arcu sed lectus. Ut tincidunt posuere feugiat.</p> 
-                    </div>
+                <h5 class="list-group-item list-group-item-action pageContent">Animation UI Guide</h5>
+                <div class="card card-body">
+                     <p>The Play button turns green when the animation finishes loading.</p>
+                     <p>The 1x and 2x Buttons control the animation speed.</p>
+                     <p>The Full screen button expands the animation to fit the screen. To exit full screen use 'Esc' key or 'F11' key on Desktop or drag down and press 'back' key on touchscreens.</p>
                 </div>
-                <a href="#" class="list-group-item list-group-item-action" onclick="dummyFullScreen();">Dummy text<span></a>
-                <a href="#" class="list-group-item list-group-item-action">Predict TLC shape from Planet Characteristics <span class="badge badge-dark">Under Development</span></a>
-                <a href="#" class="list-group-item list-group-item-action">Interpreting Kepler data and simulator <span class="badge badge-dark">Under Development</span></a>
-                <a href="#" class="list-group-item list-group-item-action">Differential Timelapse generator from FITS images <span class="badge badge-dark">Under Development</span></a>
+                <h5 class="list-group-item list-group-item-action pageContent">Exoplanets</h5>
+                <div class="card card-body">
+                     <p>An exoplanet or an extrasolar planet is a planet that is in orbit of a star other than the sun</p>
+                     <p>As of 1 May 2019, there are 4,058 confirmed planets in 3,033 systems, with 658 systems having more than one planet.</p>
+                     <p>Additional Resources:</p>
+                     <a href="https://exoplanets.nasa.gov/" target="_blank">NASA Exoplanet Exploration</a>
+                </div>
+                <h5 class="list-group-item list-group-item-action pageContent">Credits</h5>
+                <div class="card card-body">
+                  <ol>
+                    <li>Milky way Panorama:<a href="https://www.eso.org/public/images/eso0932a/">ESO/S.Brunier</a></li>
+                    <li>Milkyway Top View:NASA/JPL-Caltech/R. Hurt (SSC/Caltech)</li>
+                    <li>Solar system illustration: NASA/JPL</li>
+                    <li>Illustration,51 Pegasi b: ESO/M. Kornmesser/Nick Risinger (<a href="skysurvey.org">skysurvey.org</a>)</li>
+                    <li>Trappist System: NASA/JPL</li>
+                    <li>Habitable Zone: Chester Harman <a href="https://creativecommons.org/licenses/by-sa/4.0"></a></li>
+                    <li>Habitable Exoplanet: NASA Ames/JPL-Caltech/T. Pyle</li>
+                    <li>Kepler Space Telescope: NASA/JPL-Caltech</li>
+                  </ol>
+                    
+                </div>
+                
+                <a href="javascript:void(0);" class="list-group-item list-group-item-action">Next: Detecting Exoplanets</a>
             </div>
             
             

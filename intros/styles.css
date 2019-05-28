@@ -65,6 +65,10 @@ body{
 }
 /* End of full screen settings */
 
+h5.pageContent{
+    background-color: #f8f9fa;
+} 
+
 
 .footerColumn{
     padding: 5px;
@@ -83,6 +87,19 @@ body{
 .social a{
     color:white;
     font-size: 24px;
+}
+
+.fa-twitter:hover{
+    color:#1da1f2;
+}
+.fa-youtube:hover{
+    color:#ff0000;
+}
+.fa-facebook-f:hover{
+    color:#3b5998;
+}
+.fa-github:hover{
+    color: black;
 }
 
 footer .container{

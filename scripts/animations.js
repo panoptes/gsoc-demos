@@ -196,7 +196,7 @@ function nextImage(){
     if (current >= frames.length ){
         cancelAnimationFrame(globalAnimationId);
         playButton.setAttribute('onclick','play();');
-        playButton.innerHTML = 'Play ';
+        playButton.innerHTML = '<i class="fa fa-play"></i>';
         // if all frames have been played, ends animation and changes the Pause button to play button.
     }
     else if (typeof(frames[current])==="string"){
@@ -224,7 +224,7 @@ function play(){
     }
     globalAnimationId = requestAnimationFrame(nextImage);
     playButton.setAttribute('onclick','pause();');
-    playButton.innerHTML = 'Pause ';
+    playButton.innerHTML = '<i class="fa fa-pause"></i>';
 }
 
 function pause(){

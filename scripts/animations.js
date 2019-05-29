@@ -54,7 +54,7 @@ imgPaths.push(folderName+'trappist.jpg');
 imgPaths.push(folderName+'habitablezone.jpg');
 imgPaths.push(folderName+'kepler_186f.jpg');
 imgPaths.push(folderName+'kepler.jpg');
-imgPaths.push(folderName+'pan.png');
+imgPaths.push(folderName+'panoptes.jpg');
 
 for(i = 0;i<imgPaths.length;i++){
     let temp = new Image();
@@ -95,7 +95,7 @@ resampleAllCanvas();
 frames.push(imgs[0]);
 frames.push('Welcome! \n Today we’ll be learning about exoplanets !');
 frames.push(imgs[0]);
-frames.push('Our Universe is made up of countless galaxies like our Milky Way When we look up at the night sky, essentially everything we see is part of our Milky Way Galaxy.  This is an all sky image showing what our galaxy looks like.');
+frames.push('Our Universe is made up of countless galaxies like our Milky Way. When we look up at the night sky, essentially everything we see is part of our Milky Way Galaxy.  This is an all sky image showing what our galaxy looks like.');
 frames.push(imgs[1]);
 frames.push('This is how our galaxy would appear to an outside observer. Our sun is one among the countless stars in our galaxy. Each bright speck is a star like our sun.');
 frames.push(imgs[2]);
@@ -148,7 +148,7 @@ function fade() {
 
   if (op <= 0) {
     current++;  
-    setTimeout(nextImage, 1500/speedFactor);}
+    setTimeout(nextImage, 2000/speedFactor);}
   else {
     requestAnimationFrame(fade);
   }  
@@ -188,7 +188,7 @@ function textDraw(canvasId,canvasContext,canvasText,fontStyle="sans-serif"){
         yOffset = height-fontSize*(lines.length-i);
         ctx.fillText(lines[i],xOffset,yOffset);
     }
-    setTimeout(nextImage, 2000/speedFactor);
+    setTimeout(nextImage, lines.length*2800/speedFactor);
     current++;
 }
 

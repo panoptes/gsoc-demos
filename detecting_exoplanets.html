@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome Free for Commercial Use -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="intros/styles.css">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+    <title>Detecting Exoplanets</title>
+    <!-- Custom Javascript Files  -->
+    <script src='scripts/initialize.js'></script>
+    <script src='scripts/detecting_exoplanets.js' defer></script>
+
+  </head>
+  <body>
+    
+    <!-- Navbar begins -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#"><img src="assets/logo-white.png" class="navbarLogo"></a>
+      <button id='menuButton' class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://projectpanoptes.org/">About Project PANOPTES</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              All Demos and Simulations
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Introduction to Exoplanets</a>
+              <a class="dropdown-item active" href="#">Detecting Exoplanets</a>
+            </div>
+        </ul>
+      </div> 
+      
+    </nav>
+    <!-- Navbar ends -->
+    <!-- Implementing the animation in html5 canvas for greater control -->
+    <div id="wrapper">
+    <div id="animationContainer" class="mx-auto">
+      <svg height="300px" width="500px" id="mainSvg">
+        <defs>
+          <radialGradient id='starColor'>
+            <stop offset='20%' stop-color="white"></stop>
+            <stop offset='90%' stop-color="orange"></stop>
+            
+          </radialGradient>
+          <mask id = "starSemicircle">
+        <path  d="M 60,100 A 50,50 0 1,1 180,100" fill="white"></path>
+        </mask>
+          <filter id="glow">
+                  <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+                  <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+              </filter>
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+          </linearGradient>
+          </defs>
+        
+        <circle id="starLower" cx="120" cy="100" r = "60" fill="url('#starColor')" filter="url('#glow')"></circle>
+        <path fill="none" id = "orbit"
+                stroke="#ffffff"
+                stroke-width="1"
+                d="M20,100a100,30 0 1,1 200,0a100,30 0 1,1 -200,0"/>
+        <circle r ="20" fill="yellow" filter="url(#glow)">
+          <!-- Dont set cx and cy-->
+           <animateMotion dur="3s" repeatCount="indefinite">
+            <mpath xlink:href="#orbit"></mpath>
+          </animateMotion>
+        </circle>
+        <circle id = "starUpper" cx="120" cy="100" r = "60" fill="url('#starColor')" filter="url('#glow')" mask="url('#starSemicircle')"></circle>
+      </svg>
+      
+    </div>  
+    </div>
+    <!-- All text Content -->
+    <div class="card mx-auto">
+        <div class="card-body">
+            <h3 class="card-title">Introduction to Exoplanets</h3>
+            <div class="list-group">
+                <h5 class="list-group-item list-group-item-action pageContent">Animation UI Guide</h5>
+                <div class="card card-body">
+                     <p>The Play button turns green when the animation finishes loading.</p>
+                     <p>The 1x and 2x Buttons control the animation speed.</p>
+                     <p>The Full screen button expands the animation to fit the screen. To exit full screen use 'Esc' key or 'F11' key on Desktop or drag down and press 'back' key on touchscreens.</p>
+                </div>
+                <h5 class="list-group-item list-group-item-action pageContent">Exoplanets</h5>
+                <div class="card card-body">
+                     <p>An exoplanet or an extrasolar planet is a planet that is in orbit of a star other than the star</p>
+                     <p>As of 1 May 2019, there are 4,058 confirmed planets in 3,033 systems, with 658 systems having more than one planet.</p>
+                     <p>Additional Resources:</p>
+                     <a href="https://exoplanets.nasa.gov/" target="_blank">NASA Exoplanet Exploration</a>
+                </div>
+                <h5 class="list-group-item list-group-item-action pageContent">Credits</h5>
+                <div class="card card-body">
+                  <ol>
+                    <li>Milky way Panorama:<a href="https://www.eso.org/public/images/eso0932a/">ESO/S.Brunier</a></li>
+                    <li>Milkyway Top View:NASA/JPL-Caltech/R. Hurt (SSC/Caltech)</li>
+                    <li>Solar system illustration: NASA/JPL</li>
+                    <li>Illustration,51 Pegasi b: ESO/M. Kornmesser/Nick Risinger (<a href="skysurvey.org">skysurvey.org</a>)</li>
+                    <li>Trappist System: NASA/JPL</li>
+                    <li>Habitable Zone: Chester Harman <a href="https://creativecommons.org/licenses/by-sa/4.0"></a></li>
+                    <li>Habitable Exoplanet: NASA Ames/JPL-Caltech/T. Pyle</li>
+                    <li>Kepler Space Telescope: NASA/JPL-Caltech</li>
+                  </ol>
+                    
+                </div>
+                
+                <a href="javascript:void(0);" class="list-group-item list-group-item-action">Next: Detecting Exoplanets</a>
+            </div>
+            
+            
+            
+        </div>
+</div>
+<!-- Footer begins  -->
+<footer class="dark-background"> 
+    <div class="container">
+        <div class="row text-center text-xs-center text-sm-left text-md-left justify-content-center">
+          <div class="col-xs-12 col-sm-4 col-md-4 footerColumn">
+            <h5>About PANOPTES</h5>
+            <ul class="list-unstyled">
+              <li><a href="https://projectpanoptes.org/about">About</a></li>
+              <li><a href="https://projectpanoptes.org/posts">News</a></li>
+              <li><a href="https://projectpanoptes.org/instructions">Instructions</a></li>
+              <li><a href="https://projectpanoptes.org/articles/faq">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 footerColumn">
+            <h5>Community</h5>
+            <ul class="list-unstyled">
+              <li><a href="https://projectpanoptes.org/teams">Teams</a></li>
+              <li><a href="https://projectpanoptes.org/people">People</a></li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 footerColumn">
+            <h5>Contact</h5>
+            <ul class="list-unstyled">
+              <li><a href="info@projectpanoptes.org" title="info@projectpanoptes.org">info@projectpanoptes.org</a></li>
+              <li><a href="https://forum.projectpanoptes.org/" title="PANOPTES forum">https://forum.projectpanoptes.org</a></li>
+              <li><a href="https://projectpanoptes.org/contact" title="Contact form">Contact Form</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+            <ul class="list-unstyled list-inline social text-center">
+              <li class="list-inline-item"><a href="https://www.facebook.com/projectpanoptes/"><i class="fab fa-facebook-f"></i></a></li>
+              <li class="list-inline-item"><a href="https://twitter.com/projectpanoptes"><i class="fab fa-twitter"></i></a></li>
+              <li class="list-inline-item"><a href="https://github.com/panoptes"><i class="fab fa-github"></i></a></li>
+              <li class="list-inline-item"><a href="https://www.youtube.com/channel/UC14vvlbKTbCb7CJNs-GJF4g"><i class="fab fa-youtube"></i></a></li>
+            </ul>
+          </div>
+          </hr>
+        </div>	
+      </div>
+  </footer> 
+    
+    
+  </body>
+</html>

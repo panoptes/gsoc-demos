@@ -93,17 +93,17 @@ resampleAllCanvas();
 
 // ANIMATION FRAMES
 frames.push(imgs[0]);
-frames.push('Welcome! \n Today we’ll be learning about exoplanets !');
+frames.push('Welcome! Today we’ll be learning about exoplanets !');
 frames.push(imgs[0]);
 frames.push('Our Universe is made up of countless galaxies like our Milky Way. When we look up at the night sky, essentially everything we see is part of our Milky Way Galaxy.  This is an all sky image showing what our galaxy looks like.');
 frames.push(imgs[1]);
-frames.push('This is how our galaxy would appear to an outside observer. Our sun is one among the countless stars in our galaxy. Each bright speck is a star like our sun.');
+frames.push('This is how our galaxy would appear to an outside observer. Our sun is one among the countless stars in our galaxy. Each faint speck is a star like our sun.');
 frames.push(imgs[2]);
-frames.push('Planets like our own Earth orbit the sun.');
+frames.push('Planets including our Earth orbit the sun.');
 frames.push(imgs[3]);
 frames.push('Most of the countless stars in the universe also have planets orbiting them.These planets outside our solar system are called exoplanets.');
 frames.push(imgs[3]);
-frames.push('The first exoplanet to be discovered was 51 Pegasi b found orbiting a star like our sun.');
+frames.push('The first exoplanet found orbiting a star like our sun was 51 Pegasi b ');
 frames.push(imgs[4]);
 frames.push('Since then over 3000 exoplanets have been discovered including star systems similar to our solar system');
 frames.push(imgs[5]);
@@ -188,7 +188,7 @@ function textDraw(canvasId,canvasContext,canvasText,fontStyle="sans-serif"){
         yOffset = height-fontSize*(lines.length-i);
         ctx.fillText(lines[i],xOffset,yOffset);
     }
-    setTimeout(nextImage, lines.length*2800/speedFactor);
+    setTimeout(nextImage, words.length*400/speedFactor);
     current++;
 }
 

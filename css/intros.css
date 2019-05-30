@@ -1,12 +1,4 @@
-body{
-    background-color:goldenrod;
-}
-
-.dark-background{
-    background-color: #2f2f2f;
-    color: #f2f2f2;
-}
-
+/* Intros to exoplanets */
 #mainCanvas{
     border-radius: 1%;
     height: 45vw;
@@ -36,19 +28,15 @@ body{
     width:64vw;
 }
 }
-
+/*  */
 
 #animationControls{
     padding-bottom:5px;
     padding-top:5px;
 }
 
-.navbarLogo{
-    width:32px;
-    height:32px;
-}
-
 /* Full screen settings begin*/
+/* Intro to exoplanets specific */
 #animationContainer.fullscreen{
    padding: 0 0 0 0;
 }
@@ -64,44 +52,3 @@ body{
     left:10px;
 }
 /* End of full screen settings */
-
-h5.pageContent{
-    background-color: #f8f9fa;
-} 
-
-
-.footerColumn{
-    padding: 5px;
-    padding-top:25px;
-    width:75%;
-    border-bottom: 1px solid #4f4f4f;
-}
-
-.footerColumn a{
-    color:grey;
-}
-
-.social{
-    padding-top:10px;
-}
-.social a{
-    color:white;
-    font-size: 24px;
-}
-
-.fa-twitter:hover{
-    color:#1da1f2;
-}
-.fa-youtube:hover{
-    color:#ff0000;
-}
-.fa-facebook-f:hover{
-    color:#3b5998;
-}
-.fa-github:hover{
-    color: black;
-}
-
-footer .container{
-    max-width:80%;
-} 

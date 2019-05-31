@@ -1,7 +1,3 @@
-let mainSvg = $('#mainSvg');
-paperHeight = mainSvg.attr('height');
-paperWidth = mainSvg.attr('width');
-
 function drawStar(cx,cy,r){
   let starUpper = $('#starUpper');
   let starLower = $('#starLower');

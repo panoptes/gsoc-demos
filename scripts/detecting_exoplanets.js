@@ -1,43 +1,98 @@
-function drawStar(cx,cy,r){
-  let starUpper = $('#starUpper');
-  let starLower = $('#starLower');
-  let starUpperSemicircle = $('#starSemicircle>path');
-  let dArray = ["M",cx-r,cy,"A",r,r,0,1,1,cx+r,cy];
-  starLower.attr('cx',cx)
-    .attr('cy',cy)
-    .attr('r',r)
-    .attr('fill','url("#starColor")')
-    .attr('filter','url("#glow")');
-  starUpperSemicircle.attr("d",dArray.join(" "))
-    .attr("fill","white");
-  starUpper.attr('cx',cx)
-    .attr('cy',cy)
-    .attr('r',r)
-    .attr('fill','url("#starColor")')
-    .attr('filter','url("#glow")');
+let canvas = document.getElementById('mainCanvas');
+let ctx = canvas.getContext("2d");
+let cx = 100;
+let cy = 100;
+
+let radius = 150;
+let inclination = 30;
+let distance = 50;
+let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
+let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,radius/5);
+
+let maxZoom  = 10;
+let imgsLoaded = 0;
+let scaleX = 1;
+let scaleY =1;
+// X and Y coordinates of the point to zoom to. Default point is (0,0)
+let originX = 0;
+let originY = 0;
+// Initial zoom levels.
+let zx = 1;
+let zy = 1;
+let globalAnimationId = 0;
+
+starGradient.addColorStop(0.15,'white');
+starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
+
+let drawSemiOrbit = function(ctx,cx, cy, radius, inclination ,direction) {
+  let rx = radius;
+  let ry = rx*Math.sin(inclination%180*Math.PI/180);
+  ctx.beginPath();
+  ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI,direction);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "grey";
+  ctx.stroke();
 }
 
-function drawOrbitAndPlanet(planetRelativeRadius,inclination,relativeOrbitDistance,orbitColor='#ffffff',orbitWidth=1,directionFlag=1){
-  /* planetRelativeRadius - Radius of planet in terms of the parent star radius
-     inclination - Inclination of the orbit as seen from the earth in degrees
-     relativeOrbitDistance - The distance of the orbit from the parent star relative to parent star radius
-     directionFlag - if 1 the planet revolves clockwise, if 0 revolves anticlockwise
-  */
-  let star = $('#starLower');
-  let starRadius = star.attr('r');
-  let cx = star.attr('cx');
-  let cy = star.attr('cy');
-  let planetRadius = planetRelativeRadius * starRadius;
-  let rx = starRadius*relativeOrbitDistance;
-  let ry = rx*Math.sin(inclination*Math.PI/180);
-  let orbit = $('#orbit');
-  let planet = $('#planet');
-  let orbitD = ['M',cx-rx,cy,'a',rx,ry,0,0,directionFlag,2*rx,0,'a',rx,ry,0,0,directionFlag,-2*rx,0];
-  orbit.attr('fill',"none")
-       .attr('stroke',orbitColor)
-       .attr('stroke-width',orbitWidth)
-       .attr('d',orbitD.join(' '));
-  planet.attr('r',planetRadius);
-        
+let drawStar = function(ctx ,cx, cy, radius){
+  ctx.beginPath();
+  ctx.arc(cx,cy,radius,0,2*Math.PI);
+  ctx.closePath();
+  ctx.fillStyle = starGradient;
+  ctx.fill();
 }
-drawStar(200,200,20);
+
+let drawPlanet = function(ctx,angularPosition,radius){
+  let rx = distance;
+  let ry = distance*Math.sin(inclination*Math.PI/180);
+  let orbitX = cx;
+  let orbitY = cy;
+  let planetX = orbitX-rx*Math.cos(Math.PI-angularPosition*Math.PI/180);
+  let planetY = orbitY-ry*Math.sin(Math.PI-angularPosition*Math.PI/180);
+  ctx.beginPath();
+  ctx.fillStyle=starGradient;
+  ctx.arc(planetX,planetY,radius,0,2*Math.PI);
+  ctx.closePath();
+  ctx.fill();
+}
+
+let zoomSequence = function(){
+  zx+=0.02;
+  zy+=0.02;
+  if(zx>=10){cancelAnimationFrame(globalAnimationId);ctx.resetTransform();
+  ctx.drawImage(img,0,0);return 0;}
+  console.log(zx);
+  ctx.save();
+  ctx.scale(zx,zy);
+  ctx.drawImage(img,-originX,-originY);
+  ctx.restore();
+  requestAnimationFrame(zoomSequence);
+}
+
+let zoomToStar = function(originX = 0,originY = 0){
+  scaleX = canvas.width/img.width;
+  scaleY = canvas.height/img.height;
+  ctx.scale(scaleX,scaleY);
+  // Translate origin to point to be zoomed to
+  ctx.translate(originX,originY);
+  // Draw image with the zoom point remaining same at every zoom level
+  ctx.drawImage(img,-originX,-originY);
+  globalAnimationId = requestAnimationFrame(zoomSequence);
+}
+
+
+let img = new Image();
+let imgPath = "https://live.staticflickr.com/3820/10563093726_2945540bb8_b.jpg";
+img.src = imgPath;
+img.onload = function(){
+  
+  originX = img.width /2;
+  originY = 2*img.height /3;
+  
+  zoomToStar(originX,originY);
+}
+
+
+
+
+

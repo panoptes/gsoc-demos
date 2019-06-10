@@ -1,10 +1,72 @@
 /* For transit curve */
 #wrapper{
-    padding-top:65px;
-    background-color: black;
-
+   background-color: black;
 }
 
-#mainSvg{
-  
+#animationContainer{
+    background:black;
+    padding-top: 68px;
+    /* to compensate for space occupied by navbar */
+    padding-right:1vw;
+    padding-left:1vw;
+    font-size:0px;
+    /* To remove the space between the side by side child canvas elements */
 }
+
+#mainCanvas,#chartCanvas{
+    height: 50vh;
+    width:50%;
+    background: white;
+    display:inline;
+    border-radius: 2% 0px 0px 2%;
+}
+#chartCanvas{
+    background: #9eadb5;
+    border-radius: 0px 2% 2% 0px;
+}
+
+
+
+@media screen and (max-width:400px){
+#animationContainer{
+    background:black;
+    padding-top: 68px;
+    /* to compensate for space occupied by navbar */
+    padding-right:1vw;
+    padding-left:1vw;
+}
+#mainCanvas{
+    height: 40vh;
+    width:100%;
+    border-radius: 2% 2% 0px 0px;
+}
+#chartCanvas{
+    height: 30vh;
+    width:100%;
+    border-radius: 0px 0px 2% 2%;
+}
+}
+/*  */
+
+#animationControls{
+    padding-bottom:5px;
+    padding-top:5px;
+}
+
+/* Full screen settings begin*/
+/* Intro to exoplanets specific */
+#animationContainer.fullscreen{
+   padding: 0 0 0 0;
+}
+#mainCanvas.fullscreen{
+    width: 100vw; 
+    height: 100vh; 
+    position: relative; 
+    padding: 0px;
+}
+#animationControls.fullscreen{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+}
+/* End of full screen settings */

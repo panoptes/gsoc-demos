@@ -1,13 +1,16 @@
 let canvas = document.getElementById('mainCanvas');
 let ctx = canvas.getContext("2d");
-let cx = 100;
-let cy = 100;
+let cx = canvas.width/2;
+let cy = canvas.height/2;
 
-let radius = 150;
+let starRadius = 150;
+let planetRelativeRadius = 0.1 ;
 let inclination = 30;
-let distance = 50;
+let orbitalDistance = 50;
 let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
-let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,radius/5);
+let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,starRadius);
+starGradient.addColorStop(0.15,'white');
+starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
 
 let maxZoom  = 10;
 let imgsLoaded = 0;
@@ -21,8 +24,7 @@ let zx = 1;
 let zy = 1;
 let globalAnimationId = 0;
 
-starGradient.addColorStop(0.15,'white');
-starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
+
 
 let drawSemiOrbit = function(ctx,cx, cy, radius, inclination ,direction) {
   let rx = radius;
@@ -43,8 +45,8 @@ let drawStar = function(ctx ,cx, cy, radius){
 }
 
 let drawPlanet = function(ctx,angularPosition,radius){
-  let rx = distance;
-  let ry = distance*Math.sin(inclination*Math.PI/180);
+  let rx = orbitalDistance;
+  let ry = orbitalDistance*Math.sin(inclination*Math.PI/180);
   let orbitX = cx;
   let orbitY = cy;
   let planetX = orbitX-rx*Math.cos(Math.PI-angularPosition*Math.PI/180);
@@ -85,14 +87,20 @@ let img = new Image();
 let imgPath = "https://live.staticflickr.com/3820/10563093726_2945540bb8_b.jpg";
 img.src = imgPath;
 img.onload = function(){
-  
   originX = img.width /2;
   originY = 2*img.height /3;
-  
+  // Once image loads, get animation controls ready.
   zoomToStar(originX,originY);
 }
 
+let starSystemAnimate = function(){
+  if(angularPosition<=180){
+   drawPlanet(ctx,angularPosition,canvas.height/2,canvas.width/2);
+  }
+  else{
 
+  }
+}
 
 
 

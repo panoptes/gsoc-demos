@@ -54,15 +54,20 @@
     </nav>
     <!-- Navbar ends -->
     <!-- Implementing the animation in html5 canvas for greater control -->
-    <div id="wrapper" class = "row">
-    <div id="animationContainer" class="col-md-6">
-      <canvas id="mainCanvas" width="500px" height="500px">Your browser doesn;t support the Canvas element.</canvas>
-    </div>
-    <div id="animationControls" class="col-md-6">
-      
-    </div>  
-    <div id="transitCurveContainer" class = "row">
-
+    <div id="wrapper">
+      <div id="animationContainer" class="mx-auto">
+        <canvas height="400px" width="400px" id="mainCanvas"></canvas>
+        <canvas height="400px" width="400px" id="chartCanvas"></canvas>
+        <div id="animationControls" class="btn-group">
+          <!-- Animation controls go here -->
+        <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();"><i class="fa fa-play"></i> </button>
+        <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(1);">1x </button>
+        <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(2);">2x </button>
+        <button type="button" class="btn btn-primary col-xs-2" id="fullScreenButton" onclick="customRequestFullScreen();">Full Screen</button>
+        
+        </div>
+      </div>  
+      </div>
     </div>
     </div>
     <!-- All text Content -->

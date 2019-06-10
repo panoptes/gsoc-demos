@@ -18,11 +18,11 @@
     width:50%;
     background: white;
     display:inline;
-    border-radius: 2px 0px 0px 2px;
+    border-radius: 5px 0px 0px 5px;
 }
 #chartCanvas{
     background: #9eadb5;
-    border-radius: 0px 2px 2px 0px;
+    border-radius: 0px 5px 5px 0px;
 }
 
 
@@ -35,12 +35,12 @@
 #mainCanvas{
     height: 40vh;
     width:100%;
-    border-radius: 2px 2px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
 }
 #chartCanvas{
     height: 30vh;
     width:100%;
-    border-radius: 0px 0px 2px 2px;
+    border-radius: 0px 0px 5px 5px;
 }
 }
 /*  */

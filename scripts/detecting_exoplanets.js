@@ -63,7 +63,7 @@ let zoomSequence = function(){
   zy+=0.02;
   if(zx>=10){cancelAnimationFrame(globalAnimationId);ctx.resetTransform();
   ctx.drawImage(img,0,0);return 0;}
-  console.log(zx);
+  // console.log(zx);
   ctx.save();
   ctx.scale(zx,zy);
   ctx.drawImage(img,-originX,-originY);
@@ -152,35 +152,54 @@ let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
   }
 }
 
-let drawChartCanvasLayout = function(canvasId,transitDepth){
+let drawChartCanvasLayout = function(canvasId,transitParameters){
+  [height,width] = resizeCanvas(canvasId);
   let canvas = document.getElementById(canvasId);
   let ctx = canvas.getContext('2d');
-  let plotX = 0;
-  let plotY = 0;
-  let dx = plotX/100;
-  let dy = plotY/100;
-  [height,width] = resizeCanvas(canvasId);
-  paddingSides = 0.075 * width;
-  paddingTopBottom = 0.075 * height;
+  let pixelIndex = 0;
+  let pixelX = 0;
+  let pixelY = 0;
+  paddingSides = Math.round(0.075 * width);
+  paddingTopBottom = Math.round(0.075 * height);
+  let canvasXRange = width-2*paddingSides;
+  let canvasYRange = height-2*paddingTopBottom;
   ctx.strokeStyle = "#000000";
   ctx.translate(0.5,0.5);
-  ctx.rect(paddingSides,paddingTopBottom,width-2*paddingSides,height-2*paddingTopBottom);
-  // for()
-  // Now draw grid
+  ctx.rect(paddingSides,paddingTopBottom,canvasXRange,canvasYRange);
   ctx.stroke();
-
+  let imageData = ctx.getImageData(0,0,width,height);
+  relativeBrightness = transitParameters.relativeBrightness;
+  for(let index = 0;index<relativeBrightness.length;index++){
+    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.95,index,relativeBrightness[index],1,360);
+    pixelIndex = Math.round(4 * (pixelX + pixelY *width));
+    imageData.data[pixelIndex] = 100;
+    imageData.data[pixelIndex+1] = 100;
+    imageData.data[pixelIndex+2] = 100;
+    imageData.data[pixelIndex+3] = 1;
+    // console.log(pixelIndex);
+  }
+  // console.log(imageData);
+  ctx.putImageData(imageData,0,0);
+  return [canvasXRange,canvasYRange];
 }
 
 function resizeCanvas(canvasId){
   let canvas = document.getElementById(canvasId);
-  let height = $('#'+canvasId).height();
-  let width = $('#'+canvasId).width();
+  let height = Math.round($('#'+canvasId).height());
+  let width = Math.round($('#'+canvasId).width());
   // Resize canvas rendering grid to css canvas dimensions
   canvas.height = height;
   canvas.width = width; 
   return [height,width];
 }
 
+function mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,dataPointX,dataPointY,dataAxisXMax,dataAxisYMax){
+  let canvasPointX = canvasXRange * (dataAxisXMax - dataPointX) / (dataAxisXMax-dataAxisXMin);
+  let canvasPointY = canvasYRange * (dataAxisYMax - dataPointY) / (dataAxisYMax-dataAxisYMin);
+  return [canvasPointX,canvasPointY];
+}
 
-drawChartCanvasLayout('chartCanvas');
+resizeCanvas('chartCanvas');
+let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalDistance,inclination);
+drawChartCanvasLayout("chartCanvas",obj);
 

@@ -1,10 +1,10 @@
 /* For transit curve */
 #wrapper{
-   background-color: black;
+   background-color: #10101e;
 }
 
 #animationContainer{
-    background:black;
+    background-color:#10101e;
     padding-top: 68px;
     /* to compensate for space occupied by navbar */
     padding-right:1vw;
@@ -18,32 +18,29 @@
     width:50%;
     background: white;
     display:inline;
-    border-radius: 2% 0px 0px 2%;
+    border-radius: 2px 0px 0px 2px;
 }
 #chartCanvas{
     background: #9eadb5;
-    border-radius: 0px 2% 2% 0px;
+    border-radius: 0px 2px 2px 0px;
 }
 
 
 
 @media screen and (max-width:400px){
 #animationContainer{
-    background:black;
-    padding-top: 68px;
-    /* to compensate for space occupied by navbar */
     padding-right:1vw;
     padding-left:1vw;
 }
 #mainCanvas{
     height: 40vh;
     width:100%;
-    border-radius: 2% 2% 0px 0px;
+    border-radius: 2px 2px 0px 0px;
 }
 #chartCanvas{
     height: 30vh;
     width:100%;
-    border-radius: 0px 0px 2% 2%;
+    border-radius: 0px 0px 2px 2px;
 }
 }
 /*  */

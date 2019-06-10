@@ -6,7 +6,7 @@ let cy = canvas.height/2;
 let starRadius = 150;
 let planetRelativeRadius = 0.1 ;
 let inclination = 30;
-let orbitalDistance = 50;
+let orbitalDistance = 1.5 * starRadius;
 let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
 let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,starRadius);
 starGradient.addColorStop(0.15,'white');
@@ -102,5 +102,85 @@ let starSystemAnimate = function(){
   }
 }
 
+let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
+  let rx = orbitalRadius;
+  let ry = rx*Math.sin(inclination*Math.PI/180);
+  let angularPositions = [];
+  let d = [];
+  let z = 0;
+  let p = 0;
+  let res = [];
+  let i = 0;
+  for(i=0;i<=180;i+=1){
+    angularPositions.push(i);
+  }
+  let a = 0;
+  for(i=0;i<angularPositions.length;i++){
+    a = angularPositions[i];
+    dx = -rx*Math.cos(a*Math.PI/180);
+    dy = ry*Math.sin(a*Math.PI/180);
+    /* Using cartesian distance between two points which here are the center 
+    (0,0) and the point on the ellipstical orbit given by: 
+    (-rx * cos(angularPosition), ry * sin(angularPosition))
+    */
+    d.push(Math.sqrt(dx*dx + dy*dy));
+  }
 
+  for(i=0;i<d.length;i++){
+    z = d[i]/r_star;   
+    p = r_planet/r_star;
+    if((1+p)<z){
+        temp = 0;}    
+    else if(z<=(1-p)){
+        temp = p*p;}
+    else if(z<=(p-1)){
+        temp = 1;}
+    else if((Math.abs(1-p)<z) && (z<=1+p)){
+        k1 = Math.acos((1-p*p+z*z)/(2*z));
+        k0 = Math.acos((p*p+z*z-1)/(2*p*z));
+        temp=(p*p*k0 + k1 - Math.sqrt(z*z - Math.pow((1+z*z-p*p),2)/4))/Math.PI;
+        console.log(temp);}
+        /* (p*p*k0 + k1 - sqrt(z*z - ((1+z*z-p*p)^2)/4))/pi */
+    res.push(temp);
+  }
+  res = res.map(function(a){return 1-a;});
+  return {
+    z: z,
+    p: p,
+    distances: d,
+    relativeBrightness: res,
+  }
+}
+
+let drawChartCanvasLayout = function(canvasId,transitDepth){
+  let canvas = document.getElementById(canvasId);
+  let ctx = canvas.getContext('2d');
+  let plotX = 0;
+  let plotY = 0;
+  let dx = plotX/100;
+  let dy = plotY/100;
+  [height,width] = resizeCanvas(canvasId);
+  paddingSides = 0.075 * width;
+  paddingTopBottom = 0.075 * height;
+  ctx.strokeStyle = "#000000";
+  ctx.translate(0.5,0.5);
+  ctx.rect(paddingSides,paddingTopBottom,width-2*paddingSides,height-2*paddingTopBottom);
+  // for()
+  // Now draw grid
+  ctx.stroke();
+
+}
+
+function resizeCanvas(canvasId){
+  let canvas = document.getElementById(canvasId);
+  let height = $('#'+canvasId).height();
+  let width = $('#'+canvasId).width();
+  // Resize canvas rendering grid to css canvas dimensions
+  canvas.height = height;
+  canvas.width = width; 
+  return [height,width];
+}
+
+
+drawChartCanvasLayout('chartCanvas');
 

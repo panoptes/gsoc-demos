@@ -111,7 +111,7 @@ let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
   let p = 0;
   let res = [];
   let i = 0;
-  for(i=0;i<=180;i+=1){
+  for(i=0;i<=180;i+=0.1){
     angularPositions.push(i);
   }
   let a = 0;
@@ -168,18 +168,14 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
   ctx.rect(paddingSides,paddingTopBottom,canvasXRange,canvasYRange);
   ctx.stroke();
   let imageData = ctx.getImageData(0,0,width,height);
+  let xOffset = paddingSides;
+  let yOffset = paddingTopBottom;
   relativeBrightness = transitParameters.relativeBrightness;
   for(let index = 0;index<relativeBrightness.length;index++){
-    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.95,index,relativeBrightness[index],1,360);
-    pixelIndex = Math.round(4 * (pixelX + pixelY *width));
-    imageData.data[pixelIndex] = 100;
-    imageData.data[pixelIndex+1] = 100;
-    imageData.data[pixelIndex+2] = 100;
-    imageData.data[pixelIndex+3] = 1;
-    // console.log(pixelIndex);
+    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.98,index,relativeBrightness[index],3600,1);
+    ctx.fillStyle = "#ff0000";
+    ctx.fillRect(xOffset+pixelX,yOffset+pixelY,1,1);
   }
-  // console.log(imageData);
-  ctx.putImageData(imageData,0,0);
   return [canvasXRange,canvasYRange];
 }
 
@@ -194,12 +190,12 @@ function resizeCanvas(canvasId){
 }
 
 function mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,dataPointX,dataPointY,dataAxisXMax,dataAxisYMax){
-  let canvasPointX = canvasXRange * (dataAxisXMax - dataPointX) / (dataAxisXMax-dataAxisXMin);
-  let canvasPointY = canvasYRange * (dataAxisYMax - dataPointY) / (dataAxisYMax-dataAxisYMin);
+  let canvasPointX = Math.round(canvasXRange * (dataPointX - dataAxisXMin) / (dataAxisXMax-dataAxisXMin));
+  let canvasPointY = Math.round(canvasYRange * (dataAxisYMax - dataPointY) / (dataAxisYMax-dataAxisYMin));
   return [canvasPointX,canvasPointY];
 }
 
 resizeCanvas('chartCanvas');
-let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalDistance,inclination);
+let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius*1.2,orbitalDistance,40);
 drawChartCanvasLayout("chartCanvas",obj);
 

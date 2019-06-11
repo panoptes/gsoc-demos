@@ -139,8 +139,7 @@ let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
         k1 = Math.acos((1-p*p+z*z)/(2*z));
         k0 = Math.acos((p*p+z*z-1)/(2*p*z));
         temp=(p*p*k0 + k1 - Math.sqrt(z*z - Math.pow((1+z*z-p*p),2)/4))/Math.PI;
-        console.log(temp);}
-        /* (p*p*k0 + k1 - sqrt(z*z - ((1+z*z-p*p)^2)/4))/pi */
+      }
     res.push(temp);
   }
   res = res.map(function(a){return 1-a;});
@@ -159,30 +158,40 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
   let pixelIndex = 0;
   let pixelX = 0;
   let pixelY = 0;
-  paddingSides = Math.round(0.075 * width);
-  paddingTopBottom = Math.round(0.075 * height);
+  let pixelCoords = [];
+
+  paddingSides = (0.075 * width);
+  paddingTopBottom = (0.075 * height);
   let canvasXRange = width-2*paddingSides;
   let canvasYRange = height-2*paddingTopBottom;
-  ctx.strokeStyle = "#000000";
+  ctx.strokeStyle = "#3f3f3f";
   ctx.translate(0.5,0.5);
   ctx.rect(paddingSides,paddingTopBottom,canvasXRange,canvasYRange);
   ctx.stroke();
-  let imageData = ctx.getImageData(0,0,width,height);
   let xOffset = paddingSides;
   let yOffset = paddingTopBottom;
+  
   relativeBrightness = transitParameters.relativeBrightness;
-  for(let index = 0;index<relativeBrightness.length;index++){
+  let xAxisPoints = 2*(relativeBrightness.length-1);
+  for(let index = 0;index<xAxisPoints;index++){
+    if(index<relativeBrightness.length){
     [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.98,index,relativeBrightness[index],3600,1);
-    ctx.fillStyle = "#ff0000";
+    }
+    else{
+    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.98,index,1,xAxisPoints,1);
+    }
+    ctx.fillStyle = "#770000";
     ctx.fillRect(xOffset+pixelX,yOffset+pixelY,1,1);
+    pixelCoords.push([pixelX,pixelY]);
   }
-  return [canvasXRange,canvasYRange];
+  
+  return pixelCoords;
 }
 
 function resizeCanvas(canvasId){
   let canvas = document.getElementById(canvasId);
-  let height = Math.round($('#'+canvasId).height());
-  let width = Math.round($('#'+canvasId).width());
+  let height = $('#'+canvasId).height();
+  let width = $('#'+canvasId).width();
   // Resize canvas rendering grid to css canvas dimensions
   canvas.height = height;
   canvas.width = width; 
@@ -190,12 +199,12 @@ function resizeCanvas(canvasId){
 }
 
 function mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,dataPointX,dataPointY,dataAxisXMax,dataAxisYMax){
-  let canvasPointX = Math.round(canvasXRange * (dataPointX - dataAxisXMin) / (dataAxisXMax-dataAxisXMin));
-  let canvasPointY = Math.round(canvasYRange * (dataAxisYMax - dataPointY) / (dataAxisYMax-dataAxisYMin));
+  let canvasPointX = (canvasXRange * (dataPointX - dataAxisXMin) / (dataAxisXMax-dataAxisXMin));
+  let canvasPointY = (canvasYRange * (dataAxisYMax - dataPointY) / (dataAxisYMax-dataAxisYMin));
   return [canvasPointX,canvasPointY];
 }
 
 resizeCanvas('chartCanvas');
-let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius*1.2,orbitalDistance,40);
-drawChartCanvasLayout("chartCanvas",obj);
+let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius*1.2,orbitalDistance,0);
+k = drawChartCanvasLayout("chartCanvas",obj);
 

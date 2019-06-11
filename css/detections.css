@@ -55,8 +55,8 @@
 #animationContainer.fullscreen{
    padding: 0 0 0 0;
 }
-#mainCanvas.fullscreen{
-    width: 100vw; 
+#mainCanvas.fullscreen,#chartCanvas.fullscreen{
+    width: 50vw; 
     height: 100vh; 
     position: relative; 
     padding: 0px;

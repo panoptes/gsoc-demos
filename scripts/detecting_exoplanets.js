@@ -1,3 +1,4 @@
+let animContainer = document.getElementById("animationContainer");
 let canvas = document.getElementById('mainCanvas');
 let ctx = canvas.getContext("2d");
 let cx = canvas.width/2;
@@ -23,7 +24,8 @@ let originY = 0;
 let zx = 1;
 let zy = 1;
 let globalAnimationId = 0;
-
+// Controls hide timer
+let timer = 0;
 
 
 let drawSemiOrbit = function(ctx,cx, cy, radius, inclination ,direction) {
@@ -155,18 +157,29 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
   [height,width] = resizeCanvas(canvasId);
   let canvas = document.getElementById(canvasId);
   let ctx = canvas.getContext('2d');
-  let pixelIndex = 0;
   let pixelX = 0;
   let pixelY = 0;
   let pixelCoords = [];
-
-  paddingSides = (0.075 * width);
-  paddingTopBottom = (0.075 * height);
+  let dataAxisXMax = 3600;
+  let dataAxisXMin = 0;
+  let dataAxisYMax = 100;
+  let dataAxisYMin = 98;
+  paddingSides = Math.round(0.075 * width);
+  paddingTopBottom = Math.round(0.075 * height);
   let canvasXRange = width-2*paddingSides;
   let canvasYRange = height-2*paddingTopBottom;
-  ctx.strokeStyle = "#3f3f3f";
+  ctx.strokeStyle = "#dfdfdf";
   ctx.translate(0.5,0.5);
+  ctx.beginPath();
   ctx.rect(paddingSides,paddingTopBottom,canvasXRange,canvasYRange);
+  for(let dist = 0;dist<canvasYRange;dist+=canvasYRange/20){
+    ctx.moveTo(paddingSides,paddingTopBottom+dist);
+    ctx.lineTo(paddingSides+canvasXRange,paddingTopBottom+dist);
+  }
+  for(let dist = 0;dist<canvasXRange;dist+=canvasXRange/36){
+    ctx.moveTo(paddingSides+dist,paddingTopBottom);
+    ctx.lineTo(paddingSides+dist,paddingTopBottom+canvasYRange);
+  }
   ctx.stroke();
   let xOffset = paddingSides;
   let yOffset = paddingTopBottom;
@@ -175,12 +188,12 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
   let xAxisPoints = 2*(relativeBrightness.length-1);
   for(let index = 0;index<xAxisPoints;index++){
     if(index<relativeBrightness.length){
-    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.98,index,relativeBrightness[index],3600,1);
+    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,index,100*relativeBrightness[index],dataAxisXMax,dataAxisYMax);
     }
     else{
-    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,0,0.98,index,1,xAxisPoints,1);
+    [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,index,100,xAxisPoints,dataAxisYMax);
     }
-    ctx.fillStyle = "#770000";
+    ctx.fillStyle = "#ff0000";
     ctx.fillRect(xOffset+pixelX,yOffset+pixelY,1,1);
     pixelCoords.push([pixelX,pixelY]);
   }
@@ -208,3 +221,84 @@ resizeCanvas('chartCanvas');
 let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius*1.2,orbitalDistance,0);
 k = drawChartCanvasLayout("chartCanvas",obj);
 
+// Full screen controls
+function customRequestFullScreen(){
+    
+  if (animContainer.requestFullscreen) {
+      animContainer.requestFullscreen();
+    } else if (animContainer.mozRequestFullScreen) { /* Firefox */
+      animContainer.mozRequestFullScreen();
+    } else if (animContainer.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      animContainer.webkitRequestFullscreen();
+    } else if (animContainer.msRequestFullscreen) { /* IE/Edge */
+      animContainer.msRequestFullscreen();
+    }
+    
+  screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen);    
+  $('#fullScreenButton').attr('onclick','customExitFullScreen();');
+  $('#fullScreenButton').html('Exit Full Screen');
+}
+
+function toggleFullScreen(){
+  //Called when promise returns from customRequestFullScreen
+  $('#animationContainer').addClass('fullscreen');
+  $('#mainCanvas').addClass('fullscreen');
+  $('#chartCanvas').addClass('fullscreen');
+  $('#animationControls').addClass('fullscreen');
+  $('#mainCanvas').on('mousemove',hideControls);
+  $('#mainCanvas').on('touchstart',hideControls);
+  $('#chartCanvas').on('mousemove',hideControls);
+  $('#chartCanvas').on('touchstart',hideControls);
+
+}
+
+let hideControls= function(){
+  $('#animationControls').css('display','inline-flex');
+  clearTimeout(timer);
+  timer = setTimeout(function(){$('#animationControls').fadeOut();},1000);
+}
+
+function customExitFullScreen(){
+  document.exitFullscreen();
+  screen.orientation.unlock();
+  $('#animationContainer').removeClass('fullscreen');
+  $('#mainCanvas').removeClass('fullscreen');
+  $('#chartCanvas').removeClass('fullscreen');
+  $('#animationControls').removeClass('fullscreen');
+  clearTimeout(timer);
+  $('#mainCanvas').off();
+  $('#chartCanvas').off();
+  $('#animationControls').css('display','inline-flex');
+  fullScreenButton.setAttribute('onclick','customRequestFullScreen();');
+  fullScreenButton.innerHTML = 'Full Screen';
+}
+
+// Exit full screen view by using the back button instead of the fullscreen button 
+var onFullScreenChange = function(){
+  fullScreenElement = document.fullscreenElement ||
+  document.msFullscreenElement ||
+  document.mozFullScreenElement ||
+  document.webkitFullscreenElement;
+  if(!!fullScreenElement===false){
+  $('#animationContainer').removeClass('fullscreen');
+  $('#mainCanvas').removeClass('fullscreen');
+  $('#chartCanvas').removeClass('fullscreen');
+  $('#animationControls').removeClass('fullscreen');
+  clearTimeout(timer);
+  $('#mainCanvas').off();
+  $('#chartCanvas').off();
+  $('#animationControls').css('display','inline-flex');
+  fullScreenButton.setAttribute('onclick','customRequestFullScreen();');
+  fullScreenButton.innerHTML = 'Full Screen';
+  }
+  
+}
+
+if (document.onfullscreenchange === null)
+document.onfullscreenchange = onFullScreenChange;
+else if (document.onmsfullscreenchange === null)
+document.onmsfullscreenchange = onFullScreenChange;
+else if (document.onmozfullscreenchange === null)
+document.onmozfullscreenchange = onFullScreenChange;
+else if (document.onwebkitfullscreenchange === null)
+document.onwebkitfullscreenchange = onFullScreenChange;

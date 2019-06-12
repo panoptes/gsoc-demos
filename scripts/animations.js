@@ -273,7 +273,7 @@ function toggleFullScreen(){
     $('#animationControls').addClass('fullscreen');
     $('#mainCanvas').on('mousemove',hideControls);
     $('#mainCanvas').on('touchstart',hideControls);
-
+    hideControls();
 }
 
 let hideControls= function(){

@@ -2,7 +2,14 @@
 #wrapper{
    background-color: #10101e;
 }
-
+#subtitlesContainer{
+    width:100%;
+    height:30px;
+}
+#subtitles{
+    font-size:10px;
+    color: #daa520;
+}
 #animationContainer{
     background-color:#10101e;
     padding-top: 68px;
@@ -57,7 +64,7 @@
 }
 #mainCanvas.fullscreen,#chartCanvas.fullscreen{
     width: 50vw; 
-    height: 100vh; 
+    height: calc(100vh - 40px); 
     position: relative; 
     padding: 0px;
 }
@@ -65,5 +72,8 @@
     position:absolute;
     bottom:10px;
     left:10px;
+}
+#subtitlesContainer.fullscreen{
+    height:30px;
 }
 /* End of full screen settings */

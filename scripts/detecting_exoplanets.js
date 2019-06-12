@@ -9,6 +9,7 @@ let planetRelativeRadius = 0.1 ;
 let inclination = 30;
 let orbitalDistance = 1.5 * starRadius;
 let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
+let orbitalPeriod = 1; // Days
 let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,starRadius);
 starGradient.addColorStop(0.15,'white');
 starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
@@ -164,26 +165,33 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
   let dataAxisXMin = 0;
   let dataAxisYMax = 100;
   let dataAxisYMin = 98;
-  paddingSides = Math.round(0.075 * width);
-  paddingTopBottom = Math.round(0.075 * height);
+  paddingSides = Math.round(0.12 * width);
+  paddingTopBottom = Math.round(0.12 * height);
   let canvasXRange = width-2*paddingSides;
   let canvasYRange = height-2*paddingTopBottom;
+  let gridLinesX = 36;
+  let gridLinesY = 20;
   ctx.strokeStyle = "#dfdfdf";
   ctx.translate(0.5,0.5);
   ctx.beginPath();
   ctx.rect(paddingSides,paddingTopBottom,canvasXRange,canvasYRange);
-  for(let dist = 0;dist<canvasYRange;dist+=canvasYRange/20){
+  for(let dist = 0;dist<canvasYRange;dist+=canvasYRange/gridLinesY){
     ctx.moveTo(paddingSides,paddingTopBottom+dist);
     ctx.lineTo(paddingSides+canvasXRange,paddingTopBottom+dist);
   }
-  for(let dist = 0;dist<canvasXRange;dist+=canvasXRange/36){
+  for(let dist = 0;dist<canvasXRange;dist+=canvasXRange/gridLinesX){
     ctx.moveTo(paddingSides+dist,paddingTopBottom);
     ctx.lineTo(paddingSides+dist,paddingTopBottom+canvasYRange);
   }
   ctx.stroke();
   let xOffset = paddingSides;
   let yOffset = paddingTopBottom;
-  
+  let fontSize = paddingTopBottom/3;
+  let text = "Transit Light Curve"
+  ctx.font = fontSize + "px Verdana";
+  let startX = width/2 - ctx.measureText(text).width/2;
+  ctx.fillText(text,startX,2*paddingTopBottom/3);
+  // Transit Light Curve drawing to chartCanavs
   relativeBrightness = transitParameters.relativeBrightness;
   let xAxisPoints = 2*(relativeBrightness.length-1);
   for(let index = 0;index<xAxisPoints;index++){
@@ -196,6 +204,20 @@ let drawChartCanvasLayout = function(canvasId,transitParameters){
     ctx.fillStyle = "#ff0000";
     ctx.fillRect(xOffset+pixelX,yOffset+pixelY,1,1);
     pixelCoords.push([pixelX,pixelY]);
+  }
+  
+  for(let i=0,j=0;i<=gridLinesX || j<=gridLinesY;i+=4,j+=4){
+   let valueX = dataAxisXMin + i * (dataAxisXMax-dataAxisXMin)/gridLinesX;
+   let valueY = dataAxisYMax - j * (dataAxisYMax-dataAxisYMin)/gridLinesY;
+   ctx.fillStyle = "#1f1f1f";
+   ctx.font = fontSize/1.2 + "px Verdana";
+   if(i<=gridLinesX){
+    ctx.fillText(Math.round(10*valueX/dataAxisXMax)/10+" days",paddingSides + i * canvasXRange/gridLinesX,height-2/7*paddingTopBottom);
+   }
+   if(j<=gridLinesY){
+    ctx.fillText(valueY+" %",2/7*paddingSides,paddingTopBottom + j * canvasYRange/gridLinesY);
+   }
+
   }
   
   return pixelCoords;

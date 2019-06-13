@@ -27,6 +27,7 @@ let originY = 0;
 let zx = 1;
 let zy = 1;
 let globalAnimationId = 0;
+let globalParameterUpdateFlag = false;
 // Controls hide timer
 let timer = 0;
 
@@ -122,7 +123,7 @@ document.onwebkitfullscreenchange = onFullScreenChange;
 
 let drawSemiOrbit = function(ctx,cx, cy, radius, inclination ,direction) {
   let rx = radius;
-  let ry = rx*Math.sin(inclination%180*Math.PI/180);
+  let ry = rx*(1-Math.cos(inclination%180*Math.PI/180));
   ctx.beginPath();
   ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI,direction);
   ctx.lineWidth = 2;
@@ -140,13 +141,13 @@ let drawStar = function(ctx ,cx, cy, radius){
 
 let drawPlanet = function(ctx,cx,cy,angularPosition,radius,orbitalRadius){
   let rx = orbitalRadius;
-  let ry = orbitalRadius*Math.sin(inclination*Math.PI/180);
+  let ry = orbitalRadius*(1-Math.cos(inclination*Math.PI/180));
   let orbitX = cx;
   let orbitY = cy;
   let planetX = orbitX-rx*Math.cos(angularPosition*Math.PI/180);
   let planetY = orbitY+ry*Math.sin(angularPosition*Math.PI/180);
   ctx.beginPath();
-  ctx.fillStyle="#000000";
+  ctx.fillStyle="white";
   ctx.arc(planetX,planetY,radius,0,2*Math.PI);
   ctx.closePath();
   ctx.fill();
@@ -181,6 +182,7 @@ let drawStarSystem = function(starRadius,orbitalRadius,inclination,angularPositi
   let [height,width]=resizeCanvas('mainCanvas');
   let centerX = width/2;
   let centerY = height/2;
+  ctx.drawImage(img,0,0);
   if(angularPosition<=180){
    drawSemiOrbit(ctx,centerX,centerY,orbitalRadius,inclination,1); 
    drawStar(ctx,centerX,centerY,starRadius);
@@ -198,7 +200,7 @@ let drawStarSystem = function(starRadius,orbitalRadius,inclination,angularPositi
 
 let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
   let rx = orbitalRadius;
-  let ry = rx*Math.sin(inclination*Math.PI/180);
+  let ry = rx*(1-Math.cos(inclination*Math.PI/180));
   let angularPositions = [];
   let d = [];
   let z = 0;
@@ -290,7 +292,7 @@ let drawTransitCurve = function(canvasId,transitParameters){
   // Transit Light Curve drawing to chartCanavs
   relativeBrightness = transitParameters.relativeBrightness;
   let xAxisPoints = 2*(relativeBrightness.length-1);
-  for(let index = 0;index<xAxisPoints;index++){
+  for(let index = 0;index<=xAxisPoints;index++){
     if(index<relativeBrightness.length){
     [pixelX , pixelY] = mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,index,100*relativeBrightness[index],dataAxisXMax,dataAxisYMax);
     }
@@ -322,6 +324,14 @@ let drawTransitCurve = function(canvasId,transitParameters){
   return pixelCoords;
 }
 
+let updateAnimationParameters = function(r_star = starRadius,relative_planet = planetRelativeRadius,orbital_radius=orbitalRadius,inclination_angle = inclination){
+  globalParameterUpdateFlag = true;
+  starRadius = r_star;
+  planetRelativeRadius = relative_planet;
+  orbitalRadius = orbital_radius;
+  inclination = inclination_angle;
+} 
+
 function resizeCanvas(canvasId){
   let canvas = document.getElementById(canvasId);
   let height = $('#'+canvasId).height();
@@ -345,23 +355,24 @@ let drawSystemAndCurve = function(){
   let cssW = Math.floor(dimensionsFromString($('#chartCanvas').css('width')));
   drawStarSystem(starRadius,orbitalRadius,inclination,angularPosition);
   // transit curve update
-  if (cssH != chartCanvas.height || cssW!= chartCanvas.width) {
-    let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalRadius,0);
+  if (cssH != chartCanvas.height || cssW!= chartCanvas.width || globalParameterUpdateFlag) {
+    let obj = calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalRadius,inclination);
     pixelCoords = drawTransitCurve("chartCanvas",obj);
     basePlot.src = chartCanvas.toDataURL();
     // Update the base plot when curve is redrawn.
+    globalParameterUpdateFlag = false;
     console.log([cssH,chartCanvas.height]); 
   }
-  chartCtx.fillStyle = "#000000";
-  let [tempX,tempY] = pixelCoords[angularPosition*9+1];
+  chartCtx.fillStyle = "white";
+  let [tempX,tempY] = pixelCoords[angularPosition*10];
   
   chartCtx.beginPath();
   chartCtx.clearRect(0,0,chartCanvas.width,chartCanvas.height);
   chartCtx.drawImage(basePlot,0,0);
-  chartCtx.ellipse(paddingSides + tempX , paddingTopBottom + tempY,10,10,0,0,Math.PI*2);
+  chartCtx.ellipse(paddingSides + tempX , paddingTopBottom + tempY,6,6,0,0,Math.PI*2);
   chartCtx.closePath();
   chartCtx.fill();
-  requestAnimationFrame(drawSystemAndCurve);
+  globalAnimationId = requestAnimationFrame(drawSystemAndCurve);
 }
 
 let img = new Image();

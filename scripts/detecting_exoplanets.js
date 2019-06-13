@@ -30,6 +30,12 @@ let globalAnimationId = 0;
 // Controls hide timer
 let timer = 0;
 
+// function that converts height/width string to number
+// Eg: "326.47px" to 326.47
+function dimensionsFromString(str){
+  str = str.substr(0,str.indexOf('px'));
+  return Number(str);
+}
 // Full screen controls
 function customRequestFullScreen(){
     
@@ -276,7 +282,7 @@ let drawTransitCurve = function(canvasId,transitParameters){
 
   let xOffset = paddingSides;
   let yOffset = paddingTopBottom;
-  let fontSize = paddingTopBottom/3;
+  let fontSize = Math.min(paddingTopBottom/3,20);
   let text = "Transit Light Curve"
   ctx.font = fontSize + "px Verdana";
   let startX = width/2 - ctx.measureText(text).width/2;
@@ -335,18 +341,17 @@ function mapToCanvas(canvasXRange,canvasYRange,dataAxisXMin,dataAxisYMin,dataPoi
 let drawSystemAndCurve = function(){
   angularPosition += 1;
   angularPosition %= 360;
-  let h = canvas.height;
-  let w = canvas.width;
-  /*if (h != $('#mainCanvas').css('height') || w!= $('#mainCanvas').css('width')) {
-  [h,w] = resizeCanvas('mainCanvas');
-  }*/
+  let cssH = Math.floor(dimensionsFromString($('#chartCanvas').css('height')));
+  let cssW = Math.floor(dimensionsFromString($('#chartCanvas').css('width')));
   drawStarSystem(starRadius,orbitalRadius,inclination,angularPosition);
   // transit curve update
-  /*if (h != $('#chartCanvas').css('height') || w!= $('#chartCanvas').css('width')) {
+  if (cssH != chartCanvas.height || cssW!= chartCanvas.width) {
     let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalRadius,0);
     pixelCoords = drawTransitCurve("chartCanvas",obj);
-    console.log('called'+h+""+w);
-  }*/
+    basePlot.src = chartCanvas.toDataURL();
+    // Update the base plot when curve is redrawn.
+    console.log([cssH,chartCanvas.height]); 
+  }
   chartCtx.fillStyle = "#000000";
   let [tempX,tempY] = pixelCoords[angularPosition*9+1];
   
@@ -371,7 +376,5 @@ img.onload = function(){
 
 let obj =calcTransitParameters(starRadius,planetRelativeRadius*starRadius,orbitalRadius,0);
 let basePlot = new Image();
-
 pixelCoords = drawTransitCurve("chartCanvas",obj);
-
 basePlot.src = chartCanvas.toDataURL();

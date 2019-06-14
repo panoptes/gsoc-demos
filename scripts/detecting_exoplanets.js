@@ -1,10 +1,10 @@
 let animContainer = document.getElementById("animationContainer");
-let canvas = document.getElementById('mainCanvas');
+let mainCanvas = document.getElementById('mainCanvas');
 let chartCanvas = document.getElementById('chartCanvas');
 let chartCtx = chartCanvas.getContext('2d')
-let ctx = canvas.getContext("2d");
-let cx = canvas.width/2;
-let cy = canvas.height/2;
+let ctx = mainCanvas.getContext("2d");
+let cx = mainCanvas.width/2;
+let cy = mainCanvas.height/2;
 
 let starRadius = 75;
 let planetRelativeRadius = 0.1 ;
@@ -132,6 +132,9 @@ let drawSemiOrbit = function(ctx,cx, cy, radius, inclination ,direction) {
 }
 
 let drawStar = function(ctx ,cx, cy, radius){
+  starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,starRadius);
+  starGradient.addColorStop(0.15,'white');
+  starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
   ctx.beginPath();
   ctx.arc(cx,cy,radius,0,2*Math.PI);
   ctx.closePath();
@@ -168,8 +171,8 @@ let zoomSequence = function(){
 }
 
 let zoomToStar = function(originX = 0,originY = 0){
-  scaleX = canvas.width/img.width;
-  scaleY = canvas.height/img.height;
+  scaleX = mainCanvas.width/img.width;
+  scaleY = mainCanvas.height/img.height;
   ctx.scale(scaleX,scaleY);
   // Translate origin to point to be zoomed to
   ctx.translate(originX,originY);
@@ -251,8 +254,8 @@ let calcTransitParameters = function(r_star,r_planet,orbitalRadius,inclination){
 
 let drawTransitCurve = function(canvasId,transitParameters){
   [height,width] = resizeCanvas(canvasId);
-  let canvas = document.getElementById(canvasId);
-  let ctx = canvas.getContext('2d');
+  let mainCanvas = document.getElementById(canvasId);
+  let ctx = mainCanvas.getContext('2d');
   let pixelX = 0;
   let pixelY = 0;
   let pixelCoords = [];
@@ -333,12 +336,12 @@ let updateAnimationParameters = function(r_star = starRadius,relative_planet = p
 } 
 
 function resizeCanvas(canvasId){
-  let canvas = document.getElementById(canvasId);
+  let mainCanvas = document.getElementById(canvasId);
   let height = $('#'+canvasId).height();
   let width = $('#'+canvasId).width();
-  // Resize canvas rendering grid to css canvas dimensions
-  canvas.height = height;
-  canvas.width = width; 
+  // Resize mainCanvas rendering grid to css mainCanvas dimensions
+  mainCanvas.height = height;
+  mainCanvas.width = width; 
   return [height,width];
 }
 
@@ -361,8 +364,9 @@ let drawSystemAndCurve = function(){
     basePlot.src = chartCanvas.toDataURL();
     // Update the base plot when curve is redrawn.
     globalParameterUpdateFlag = false;
-    console.log([cssH,chartCanvas.height]); 
+    
   }
+  
   chartCtx.fillStyle = "white";
   let [tempX,tempY] = pixelCoords[angularPosition*10];
   

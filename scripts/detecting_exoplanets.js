@@ -31,6 +31,68 @@ let globalParameterUpdateFlag = false;
 // Controls hide timer
 let timer = 0;
 
+let updateAnimationParameters = function(r_star = starRadius,relative_planet = planetRelativeRadius,orbital_radius=orbitalRadius,inclination_angle = inclination){
+  globalParameterUpdateFlag = true;
+  starRadius = r_star;
+  planetRelativeRadius = relative_planet;
+  orbitalRadius = orbital_radius;
+  inclination = inclination_angle;
+} 
+
+// Range Sliders for animation parameters
+let starSlider = document.getElementById('starSlider');
+let inclinationSlider = document.getElementById('inclinationSlider');
+let orbitalSlider = document.getElementById('orbitalSlider');
+let planetSlider = document.getElementById('planetSlider');
+
+let createSlider = function(slider,start,min,max){
+  noUiSlider.create(slider,{
+    start:start,
+    connect:[true,false],
+    range:{
+      'min': min,
+      'max': max,
+    }
+  })
+}
+
+// Creating sliders
+createSlider(starSlider,starRadius,0,mainCanvas.width/3);
+createSlider(planetSlider,planetRelativeRadius,0,1);
+createSlider(orbitalSlider,orbitalRadius,starRadius*(1+planetRelativeRadius),mainCanvas.width/2);
+createSlider(inclinationSlider,inclination,0,90);
+// Update Slider Range
+let updateSlider = function(slider,min,max){
+  slider.noUiSlider.updateOptions({
+    range:{
+      'min':min,
+      'max':max,
+    }
+  })
+}
+// Disply slider value
+starSlider.noUiSlider.on("slide", function() {
+  let temp = Number(starSlider.noUiSlider.get());
+  $("#star-radius-label").html(temp);
+  updateSlider(orbitalSlider,starRadius*(1+planetRelativeRadius),mainCanvas.width/2);
+  updateAnimationParameters(temp,planetRelativeRadius,orbitalRadius,inclination);
+});
+planetSlider.noUiSlider.on("update", function() {
+  let temp = Number(planetSlider.noUiSlider.get());
+  $("#planet-relative-radius-label").html(temp);
+  updateAnimationParameters(starRadius,temp,orbitalRadius,inclination);
+});
+orbitalSlider.noUiSlider.on("update", function() {
+  let temp = Number(orbitalSlider.noUiSlider.get());
+  $("#orbital-distance-label").html(temp);
+  updateAnimationParameters(starRadius,planetRelativeRadius,temp,inclination);
+});
+inclinationSlider.noUiSlider.on("update", function() {
+  let temp = Number(inclinationSlider.noUiSlider.get());
+  $("#inclination-label").html(temp);
+  updateAnimationParameters(starRadius,planetRelativeRadius,orbitalRadius,temp);
+});
+
 // function that converts height/width string to number
 // Eg: "326.47px" to 326.47
 function dimensionsFromString(str){
@@ -326,14 +388,6 @@ let drawTransitCurve = function(canvasId,transitParameters){
   
   return pixelCoords;
 }
-
-let updateAnimationParameters = function(r_star = starRadius,relative_planet = planetRelativeRadius,orbital_radius=orbitalRadius,inclination_angle = inclination){
-  globalParameterUpdateFlag = true;
-  starRadius = r_star;
-  planetRelativeRadius = relative_planet;
-  orbitalRadius = orbital_radius;
-  inclination = inclination_angle;
-} 
 
 function resizeCanvas(canvasId){
   let mainCanvas = document.getElementById(canvasId);

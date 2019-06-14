@@ -78,14 +78,18 @@
 }
 /* End of full screen settings */
 
-/* Parameter Controls */
+/* Parameter Slider Controls */
+.slider-label{
+  padding-bottom: 2px;
+}
 #parameterControls{
-    font-size: 12px;
+    font-size: 14px;
     padding:10px;
+    color:teal;
 }
 
 .noUi-horizontal {
-    height: 6px;
+    height: 8px;
 }
 
 .noUi-target {

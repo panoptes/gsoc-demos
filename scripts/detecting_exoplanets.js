@@ -45,7 +45,7 @@ let inclinationSlider = document.getElementById('inclinationSlider');
 let orbitalSlider = document.getElementById('orbitalSlider');
 let planetSlider = document.getElementById('planetSlider');
 
-let createSlider = function(slider,start,min,max){
+let createSlider = function(slider,start,min,max,sliderLabelId){
   noUiSlider.create(slider,{
     start:start,
     connect:[true,false],
@@ -54,13 +54,14 @@ let createSlider = function(slider,start,min,max){
       'max': max,
     }
   })
+  $('#'+sliderLabelId).html(start);
 }
 
 // Creating sliders
-createSlider(starSlider,starRadius,0,mainCanvas.width/3);
-createSlider(planetSlider,planetRelativeRadius,0,1);
-createSlider(orbitalSlider,orbitalRadius,starRadius*(1+planetRelativeRadius),mainCanvas.width/2);
-createSlider(inclinationSlider,inclination,0,90);
+createSlider(starSlider,starRadius,0,mainCanvas.width/3,'star-radius-label');
+createSlider(planetSlider,planetRelativeRadius,0,1,'planet-relative-radius-label');
+createSlider(orbitalSlider,orbitalRadius,starRadius*(1+planetRelativeRadius),mainCanvas.width/2,'orbital-distance-label');
+createSlider(inclinationSlider,inclination,0,90,'inclination-label');
 // Update Slider Range
 let updateSlider = function(slider,min,max){
   slider.noUiSlider.updateOptions({
@@ -68,10 +69,13 @@ let updateSlider = function(slider,min,max){
       'min':min,
       'max':max,
     }
-  })
+  });
+  let temp = Number(slider.noUiSlider.get());
+  slider.noUiSlider.set(Math.max(temp,min));
+  console.log([min,Math.max(temp,min),temp]);
 }
 // Disply slider value
-starSlider.noUiSlider.on("slide", function() {
+starSlider.noUiSlider.on("update", function() {
   let temp = Number(starSlider.noUiSlider.get());
   $("#star-radius-label").html(temp);
   updateSlider(orbitalSlider,starRadius*(1+planetRelativeRadius),mainCanvas.width/2);

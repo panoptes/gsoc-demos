@@ -11,7 +11,7 @@ let planetRelativeRadius = 0.1 ;
 let inclination = 30;
 let orbitalRadius = 1.5 * starRadius;
 let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
-let orbitalPeriod = 1; // Days
+let orbitalPeriod = 2.2; // Days
 let starGradient = ctx.createRadialGradient(cx,cy,0,cx,cy,starRadius);
 starGradient.addColorStop(0.15,'white');
 starGradient.addColorStop(1,'rgba(248, 148, 6, 1)');
@@ -60,7 +60,7 @@ let createSlider = function(slider,start,min,max,sliderLabelId){
 // Creating sliders
 createSlider(starSlider,starRadius,0,mainCanvas.width/3,'star-radius-label');
 createSlider(planetSlider,planetRelativeRadius,0,1,'planet-relative-radius-label');
-createSlider(orbitalSlider,orbitalRadius,starRadius*(1+planetRelativeRadius),mainCanvas.width/2,'orbital-distance-label');
+createSlider(orbitalSlider,orbitalRadius,starRadius*(1+planetRelativeRadius),Math.min(mainCanvas.height/2,mainCanvas.width/2),'orbital-distance-label');
 createSlider(inclinationSlider,inclination,0,90,'inclination-label');
 // Update Slider Range
 let updateSlider = function(slider,min,max){
@@ -71,19 +71,25 @@ let updateSlider = function(slider,min,max){
     }
   });
   let temp = Number(slider.noUiSlider.get());
+  console.log(temp);
+  if (isNaN(temp)){
+    temp = min;
+    console.log(min);
+  }
   slider.noUiSlider.set(Math.max(temp,min));
-  console.log([min,Math.max(temp,min),temp]);
+  // console.log([min,Math.max(temp,min),temp]);
 }
 // Disply slider value
 starSlider.noUiSlider.on("update", function() {
   let temp = Number(starSlider.noUiSlider.get());
   $("#star-radius-label").html(temp);
-  updateSlider(orbitalSlider,starRadius*(1+planetRelativeRadius),mainCanvas.width/2);
+  updateSlider(orbitalSlider,starRadius*(1+planetRelativeRadius),Math.min(mainCanvas.height/2,mainCanvas.width/2));
   updateAnimationParameters(temp,planetRelativeRadius,orbitalRadius,inclination);
 });
 planetSlider.noUiSlider.on("update", function() {
   let temp = Number(planetSlider.noUiSlider.get());
   $("#planet-relative-radius-label").html(temp);
+  updateSlider(orbitalSlider,starRadius*(1+planetRelativeRadius),Math.min(mainCanvas.height/2,mainCanvas.width/2));
   updateAnimationParameters(starRadius,temp,orbitalRadius,inclination);
 });
 orbitalSlider.noUiSlider.on("update", function() {
@@ -379,10 +385,10 @@ let drawTransitCurve = function(canvasId,transitParameters){
    ctx.fillStyle = "#1f1f1f";
    ctx.font = fontSize/1.2 + "px Verdana";
    if(i<gridLinesX){
-    ctx.fillText(Math.round(10*valueX/dataAxisXMax)/10,paddingSides + i * canvasXRange/gridLinesX,height-2/7*paddingTopBottom);
+    ctx.fillText(Math.round(orbitalPeriod*10*valueX/dataAxisXMax)/10,paddingSides + i * canvasXRange/gridLinesX,height-2/7*paddingTopBottom);
    }
    else if(i=gridLinesX){
-    ctx.fillText(Math.round(10*valueX/dataAxisXMax)/10+" days",paddingSides + i * canvasXRange/gridLinesX,height-2/7*paddingTopBottom);
+    ctx.fillText(Math.round(orbitalPeriod*10*valueX/dataAxisXMax)/10+" days",paddingSides + i * canvasXRange/gridLinesX,height-2/7*paddingTopBottom);
    }
    if(j<=gridLinesY){
     ctx.fillText(valueY+"%",1/7*paddingSides,paddingTopBottom + j * canvasYRange/gridLinesY);

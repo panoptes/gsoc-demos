@@ -57,6 +57,7 @@ let createSlider = function (slider, start, min, max, sliderLabelId) {
   $('#' + sliderLabelId).html(start);
 }
 
+
 // Creating sliders
 createSlider(starSlider, starRadius, 0, mainCanvas.width / 3, 'star-radius-label');
 createSlider(planetSlider, planetRelativeRadius, 0, 1, 'planet-relative-radius-label');
@@ -192,17 +193,16 @@ else if (document.onwebkitfullscreenchange === null)
   document.onwebkitfullscreenchange = onFullScreenChange;
 
 // Animation Support Methods
-let drawStarField = function (ctx,width,height) {
+let drawStarField = function (ctx,width,height,zoom) {
 
-  ctx.clearRect(0, 0, width, height);
+  // ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
+  for (i = 0; i < 1000/zoom; i++) {
 
-  for (i = 0; i < 600; i++) {
-
-    let x = Math.floor(Math.random() * width);
-    let y = Math.floor(Math.random() * height);
-    let radius = Math.floor(Math.random() * 2.5);
+    let x = Math.floor(Math.random() * width * zoom);
+    let y = Math.floor(Math.random() * height * zoom);
+    let radius = Math.floor(Math.random() * 2.5 * zoom );
 
     let a = Math.random();
     let colors = ["rgba(255,255,255,", "rgba(255,165,0,", "rgba(0,128,255,", "rgba(255,255,255,", "rgba(255,255,255,"];
@@ -212,7 +212,7 @@ let drawStarField = function (ctx,width,height) {
     ctx.fillStyle = colors[index] + a + ")";
     ctx.fill();
     ctx.closePath();
-
+    // console.log(a);
   }
 }
 
@@ -228,7 +228,7 @@ let drawSemiOrbit = function (ctx, cx, cy, radius, inclination, direction) {
 }
 
 let drawStar = function (ctx, cx, cy, radius) {
-  starGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, starRadius);
+  starGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
   starGradient.addColorStop(0.15, 'white');
   starGradient.addColorStop(1, 'rgba(248, 148, 6, 1)');
   ctx.beginPath();
@@ -254,36 +254,37 @@ let drawPlanet = function (ctx, cx, cy, angularPosition, radius, orbitalRadius) 
 }
 
 let zoomSequence = function () {
-  zx += 0.02;
-  zy += 0.02;
+  zx += 0.05;
+  zy += 0.05;
   if (zx >= 10) {
     cancelAnimationFrame(globalAnimationId); ctx.resetTransform();
-    ctx.drawImage(img, 0, 0); drawSystemAndCurve(); return 0;
+    resizeCanvas('mainCanvas');
+    drawStarField(ctx,mainCanvas.width,mainCanvas.height,10);
+    img.src = mainCanvas.toDataURL();
+    drawSystemAndCurve(); 
+    return 0;
   }
-  // console.log(zx);
-  ctx.save();
-  ctx.scale(zx, zy);
-  ctx.drawImage(img, -originX, -originY);
-  ctx.restore();
+  resizeCanvas('mainCanvas');
+  drawStarField(ctx,mainCanvas.width,mainCanvas.height,zx);
+  img.src = mainCanvas.toDataURL();
+  ctx.drawImage(img,0,0);
+  drawStarSystem(starRadius,orbitalRadius,inclination,angularPosition,zx/10);
   requestAnimationFrame(zoomSequence);
 }
 
 let zoomToStar = function (originX = 0, originY = 0) {
-  scaleX = mainCanvas.width / img.width;
-  scaleY = mainCanvas.height / img.height;
-  ctx.scale(scaleX, scaleY);
-  // Translate origin to point to be zoomed to
-  ctx.translate(originX, originY);
-  // Draw image with the zoom point remaining same at every zoom level
-  ctx.drawImage(img, -originX, -originY);
   globalAnimationId = requestAnimationFrame(zoomSequence);
 }
 
-let drawStarSystem = function (starRadius, orbitalRadius, inclination, angularPosition) {
-  let [height, width] = resizeCanvas('mainCanvas');
+let drawStarSystem = function (starRadius, orbitalRadius, inclination, angularPosition,zoom = 1) {
+  let height = mainCanvas.height;
+  let width = mainCanvas.width;
+  // Resizing clears the canvas.
   let centerX = width / 2;
   let centerY = height / 2;
-  ctx.drawImage(img, 0, 0);
+  ctx.drawImage(img,0,0);
+  starRadius *= zoom;
+  orbitalRadius *= zoom;
   if (angularPosition <= 180) {
     drawSemiOrbit(ctx, centerX, centerY, orbitalRadius, inclination, 1);
     drawStar(ctx, centerX, centerY, starRadius);
@@ -449,7 +450,15 @@ let drawSystemAndCurve = function () {
   angularPosition %= 360;
   let cssH = Math.floor(dimensionsFromString($('#chartCanvas').css('height')));
   let cssW = Math.floor(dimensionsFromString($('#chartCanvas').css('width')));
+  // Main Canvas update
+  if (cssH != mainCanvas.height || cssW != mainCanvas.width ) {
+    let [h,w] = resizeCanvas('mainCanvas');
+    drawStarField(ctx,w,h,10);
+    img.src = mainCanvas.toDataURL();
+  
+  }
   drawStarSystem(starRadius, orbitalRadius, inclination, angularPosition);
+
   // transit curve update
   if (cssH != chartCanvas.height || cssW != chartCanvas.width || globalParameterUpdateFlag) {
     let obj = calcTransitParameters(starRadius, planetRelativeRadius * starRadius, orbitalRadius, inclination);
@@ -459,6 +468,7 @@ let drawSystemAndCurve = function () {
     globalParameterUpdateFlag = false;
 
   }
+
 
   chartCtx.fillStyle = "white";
   let [tempX, tempY] = pixelCoords[angularPosition * 10];
@@ -476,13 +486,13 @@ let subtitles = []
 let img = new Image();
 // let imgPath = "https://live.staticflickr.com/3820/10563093726_2945540bb8_b.jpg";
 resizeCanvas('mainCanvas');
-drawStarField(ctx,mainCanvas.width,mainCanvas.height);
+drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
 img.src = mainCanvas.toDataURL();
 img.onload = function () {
   originX = img.width / 2;
   originY = 2 * img.height / 3;
   // Once image loads, get animation controls ready.
-  zoomToStar(originX, originY);
+  // zoomToStar(originX, originY);
 }
 
 let obj = calcTransitParameters(starRadius, planetRelativeRadius * starRadius, orbitalRadius, 0);
@@ -490,4 +500,4 @@ let basePlot = new Image();
 pixelCoords = drawTransitCurve("chartCanvas", obj);
 basePlot.src = chartCanvas.toDataURL();
 
-
+zoomToStar(originX, originY);

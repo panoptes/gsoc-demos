@@ -28,8 +28,12 @@ let zx = 1;
 let zy = 1;
 let globalAnimationId = 0;
 let globalParameterUpdateFlag = false;
-// Controls hide timer
+// Timer that hides the controls. Time set in 
 let timer = 0;
+// Play and pause controls
+let current = 0;
+let cachedCurrent = 0;
+let playButton = document.getElementById('playButton');
 
 let updateAnimationParameters = function (r_star = starRadius, relative_planet = planetRelativeRadius, orbital_radius = orbitalRadius, inclination_angle = inclination) {
   globalParameterUpdateFlag = true;
@@ -112,7 +116,6 @@ function dimensionsFromString(str) {
 }
 // Full screen controls
 function customRequestFullScreen() {
-
   if (animContainer.requestFullscreen) {
     animContainer.requestFullscreen();
   } else if (animContainer.mozRequestFullScreen) { /* Firefox */
@@ -122,7 +125,6 @@ function customRequestFullScreen() {
   } else if (animContainer.msRequestFullscreen) { /* IE/Edge */
     animContainer.msRequestFullscreen();
   }
-
   screen.orientation.lock('landscape').then(toggleFullScreen, toggleFullScreen);
   $('#fullScreenButton').attr('onclick', 'customExitFullScreen();');
   $('#fullScreenButton').html('Exit Full Screen');
@@ -450,12 +452,13 @@ let drawSystemAndCurve = function () {
   angularPosition %= 360;
   let cssH = Math.floor(dimensionsFromString($('#chartCanvas').css('height')));
   let cssW = Math.floor(dimensionsFromString($('#chartCanvas').css('width')));
+  let mainCssH = Math.floor(dimensionsFromString($('#mainCanvas').css('height')));
+  let mainCssW = Math.floor(dimensionsFromString($('#mainCanvas').css('width')));
   // Main Canvas update
-  if (cssH != mainCanvas.height || cssW != mainCanvas.width ) {
+  if ( mainCssH!= mainCanvas.height || mainCssW != mainCanvas.width ) {
     let [h,w] = resizeCanvas('mainCanvas');
     drawStarField(ctx,w,h,10);
     img.src = mainCanvas.toDataURL();
-  
   }
   drawStarSystem(starRadius, orbitalRadius, inclination, angularPosition);
 
@@ -466,7 +469,6 @@ let drawSystemAndCurve = function () {
     basePlot.src = chartCanvas.toDataURL();
     // Update the base plot when curve is redrawn.
     globalParameterUpdateFlag = false;
-
   }
 
 
@@ -481,7 +483,7 @@ let drawSystemAndCurve = function () {
   chartCtx.fill();
   globalAnimationId = requestAnimationFrame(drawSystemAndCurve);
 }
-let subtitles = []
+let subtitles = [];
 
 let img = new Image();
 // let imgPath = "https://live.staticflickr.com/3820/10563093726_2945540bb8_b.jpg";
@@ -489,10 +491,88 @@ resizeCanvas('mainCanvas');
 drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
 img.src = mainCanvas.toDataURL();
 img.onload = function () {
-  originX = img.width / 2;
-  originY = 2 * img.height / 3;
-  // Once image loads, get animation controls ready.
-  // zoomToStar(originX, originY);
+  // originX = img.width / 2;
+  // originY = 2 * img.height / 3;
+  
+}
+/* ANIMATION SEQUENCES STORED AS OBJECTS IN AN ARRAY */
+let frames = [];
+// SEQUENCE 1 - ZOOMSEQUENCE
+frames.push({
+  sequence:zoomToStar(),
+  subtitles: "When we look up at the night sky, we see countless stars. A large number of them have planets like our own Earth orbiting them",
+});
+// SEQUENCE 2 - STAR-SYSTEM ORBIT
+frames.push({
+  sequence:[],
+  subtitles:"",
+});
+// SEQUENCE 3 - INCLINATION SET TO 90 DEG
+frames.push({
+  sequence:[inclinationSlider.noUiSlider.set,90],
+  subtitles: "When the planet’s orbit is inclined at 90 deg from our position on Earth, the planet doesn’t cross the surface of the star and hence there is no change in the brightness of the star. We cannot detect exoplanets oriented this way using the transit method."
+});
+// SEQUENCE 4 - INCLINATION SET TO 0 DEG
+frames.push({
+  sequence:[inclinationSlider.noUiSlider.set,0],
+  subtitles: "The decrease in brightness is maximum when the planet orbits at an inclination of 0 degrees -- the planet’s orbit is in line with the view from Earth."
+});
+// SEQUENCE 5 - INCLINATION CHANGES TILL TRANSIT DEPTH IS 0
+frames.push({
+  sequence:[],
+  subtitles:"For inclinations which are not 0, the planet may cross in front of the star, but it depends on how big the star is and how far away from the star the planet orbits.  At some point, as you increase the inclination, the planet will no longer transit and this method won’t see it.",
+});
+// SEQEUNCE 6 - 
+frames.push({
+  sequence:[],
+  subtitles:"If the planet does cross in front of the star, the distance of the exoplanet from the star doesn’t affect the depth of transit light curve, but it will effect the period (how long between transits) and their duration (how long the transit lasts)."
+});
+// SEQUENCE 7 - INCREASE PLANET RELATIVE RADIUS 
+frames.push({
+  sequence:[],
+  subtitles: "The relative size of the exoplanet with respect to the star affects the depth of the transit. The larger the planet, the bigger the decrease in the relative brightness of the star"
+});
+// SEQEUNCE 8 - DECREASE  PLANET RELATIVE RADIUS
+frames.push({
+  sequence:[],
+  subtitles: "The smaller the planet, lesser is the decrease in the relative brightness of the star. Play around with the parameters and see the changes to the transit light curve"
+})
+/* ANIMATION SEQUNECES END */
+/* Play and Pause Animation. Bound to play button */
+function play(){
+  // restart if animation completed 
+  if(current>frames.length){
+      current=cachedCurrent;
+  }
+  else if(current===frames.length){
+  current = 0;
+  cachedCurrent = 0;
+  }
+  globalAnimationId = requestAnimationFrame(nextSequence);
+  playButton.setAttribute('onclick','pause();');
+  playButton.innerHTML = '<i class="fa fa-pause"></i>';
+}
+
+function pause(){
+  if (globalAnimationId!=="undefined"){
+  cachedCurrent = current;
+  current=frames.length+1;
+  }
+  playButton.setAttribute('onclick','play();');
+  playButton.innerHTML = '<i class="fa fa-play"></i>';
+}
+
+function nextSequence(){
+  if (current >= frames.length ){
+      cancelAnimationFrame(globalAnimationId);
+      playButton.setAttribute('onclick','play();');
+      playButton.innerHTML = '<i class="fa fa-play"></i>';
+      // if all frames have been played, ends animation and changes the Pause button to play button.
+  }
+  else{
+      console.log(frames[current].sequence);
+      // current incremented in sequence functions.
+  }
 }
 
 let obj = calcTransitParameters(starRadius, planetRelativeRadius * starRadius, orbitalRadius, 0);

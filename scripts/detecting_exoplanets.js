@@ -15,6 +15,12 @@ let orbitalPeriod = 2.2; // Days
 let starGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, starRadius);
 starGradient.addColorStop(0.15, 'white');
 starGradient.addColorStop(1, 'rgba(248, 148, 6, 1)');
+let cachedParameters = {
+  rStar:starRadius,
+  rPlanet:planetRelativeRadius,
+  orbit:orbitalRadius,
+  inclination:inclination,
+}
 
 let maxZoom = 10;
 let imgsLoaded = 0;
@@ -80,10 +86,10 @@ let updateSlider = function (slider, min, max) {
     }
   });
   let temp = Number(slider.noUiSlider.get());
-  console.log(temp);
+  // console.log(temp);
   if (isNaN(temp)) {
     temp = min;
-    console.log(min);
+    // console.log(min);
   }
   slider.noUiSlider.set(Math.max(temp, min));
   // console.log([min,Math.max(temp,min),temp]);
@@ -501,37 +507,47 @@ frames.push({
 });
 // SEQUENCE 2 - STAR-SYSTEM ORBIT
 frames.push({
-  sequence:function(){drawSystemAndCurve();setTimeout(nextSequence,8000);},
-  subtitles:"",
+  sequence:function(){resetSystemParameters();drawSystemAndCurve();setTimeout(nextSequence,8000);},
+  subtitles:"These exoplanets can’t be seen directly because they are hidden in the glare of their star.",
 });
-// SEQUENCE 3 - INCLINATION SET TO 90 DEG
+// SEQEUNCE 3 - ONLY SUBTITLES
 frames.push({
-  sequence:function(){inclinationSlider.noUiSlider.set(90);setTimeout(nextSequence,8000);},
-  subtitles: "When the planet’s orbit is inclined at 90 deg from our position on Earth, the planet doesn’t cross the surface of the star and hence there is no change in the brightness of the star. We cannot detect exoplanets oriented this way using the transit method."
+  sequence:function(){resetSystemParameters();setTimeout(nextSequence,8000);},
+  subtitles:"Instead we use the transit method to detect these exoplanets. The principle is simple, when an exoplanet passes in front of its star during its orbit, the light coming from the star is partially blocked by the planet",
+})
+// SEQEUNCE 4 - ONLY SUBTITLES
+frames.push({
+  sequence:function(){resetSystemParameters();setTimeout(nextSequence,8000);},
+  subtitles:"By watching how the star’s brightness changes, we can identify if there are any exoplanets in its orbit and examine their properties",
+})
+// SEQUENCE 5 - INCLINATION SET TO 90 DEG
+frames.push({
+  sequence:function(){resetSystemParameters();inclinationSlider.noUiSlider.set(90);cacheSystemParameters(false,false,false,true);setTimeout(nextSequence,10000);},
+  subtitles: "When the planet’s orbit is inclined at 90 degrees from our position on Earth, the planet doesn’t cross the surface of the star and hence there is no change in the brightness of the star. We cannot detect exoplanets oriented this way using the transit method.",
 });
-// SEQUENCE 4 - INCLINATION SET TO 0 DEG
+// SEQUENCE 6 - INCLINATION SET TO 0 DEG
 frames.push({
-  sequence:function(){inclinationSlider.noUiSlider.set(0);setTimeout(nextSequence,8000);},
+  sequence:function(){resetSystemParaamters();inclinationSlider.noUiSlider.set(0);cachesSystemParamters(false,false,false,true);setTimeout(nextSequence,10000);},
   subtitles: "The decrease in brightness is maximum when the planet orbits at an inclination of 0 degrees -- the planet’s orbit is in line with the view from Earth."
 });
-// SEQUENCE 5 - INCLINATION CHANGES TILL TRANSIT DEPTH IS 0
+// SEQUENCE 7 - INCLINATION CHANGES TILL TRANSIT DEPTH IS 0
 frames.push({
-  sequence:function(){inclinationSlider.noUiSlider.set(75);setTimeout(nextSequence,8000);},
+  sequence:function(){resetSystemParameters();inclinationSlider.noUiSlider.set(75);cacheSystemParameters(false,false,false,true);setTimeout(nextSequence,10000);},
   subtitles:"For inclinations which are not 0, the planet may cross in front of the star, but it depends on how big the star is and how far away from the star the planet orbits.  At some point, as you increase the inclination, the planet will no longer transit and this method won’t see it.",
 });
-// SEQEUNCE 6 - 
+// SEQEUNCE 8 - CHANGE ORBITAL DISTANCE
 frames.push({
-  sequence:function(){inclinationSlider.noUiSlider.set(40);setTimeout(nextSequence,8000);},
+  sequence:function(){resetSystemParamters();orbitalSlider.noUiSlider.set(123);cacheSystemParameters(false,false,true,false);setTimeout(nextSequence,10000);},
   subtitles:"If the planet does cross in front of the star, the distance of the exoplanet from the star doesn’t affect the depth of transit light curve, but it will effect the period (how long between transits) and their duration (how long the transit lasts)."
 });
-// SEQUENCE 7 - INCREASE PLANET RELATIVE RADIUS 
+// SEQUENCE 9 - INCREASE PLANET RELATIVE RADIUS 
 frames.push({
-  sequence:function(){planetSlider.noUiSlider.set(0.5);setTimeout(nextSequence,8000);},
+  sequence:function(){resetSystemParameters();planetSlider.noUiSlider.set(0.5);cacheSystemParameters(false,true,false,false);setTimeout(nextSequence,10000);},
   subtitles: "The relative size of the exoplanet with respect to the star affects the depth of the transit. The larger the planet, the bigger the decrease in the relative brightness of the star"
 });
-// SEQEUNCE 8 - DECREASE  PLANET RELATIVE RADIUS
+// SEQEUNCE 10 - DECREASE  PLANET RELATIVE RADIUS
 frames.push({
-  sequence:function(){planetSlider.noUiSlider.set(0.1);setTimeout(nextSequence,8000);},
+  sequence:function(){resetSystemParameters();planetSlider.noUiSlider.set(0.1);cacheSystemParameters(false,true,false,false);setTimeout(nextSequence,10000);},
   subtitles: "The smaller the planet, lesser is the decrease in the relative brightness of the star. Play around with the parameters and see the changes to the transit light curve"
 })
 /* ANIMATION SEQUNECES END */
@@ -561,6 +577,19 @@ function pause(){
   playButton.setAttribute('onclick','play();');
   playButton.innerHTML = '<i class="fa fa-play"></i>';
 }
+
+function cacheSystemParameters(r_star=true,r_planet=true,orbital_radius=true,inclination_angle=true){
+  if(r_star){cachedParameters.rStar = starRadius;}
+  if(r_planet){cachedParamters.rPlanet = planetRelativeRadius;}
+  if(orbital_radius){cachedParamters.orbit = orbitalRadius;}
+  if(inclination_angle){cachedParameters.inclination = inclination;}
+}
+function resetSystemParameters(){
+  starSlider.noUiSlider.set(cachedParameters.rStar);
+  inclinationSlider.noUiSlider.set(cachedParameters.inclination);
+  planetSlider.noUiSlider.set(cachedParameters.rPlanet);
+  orbitalSlider.noUiSlider.set(cachedParameters.orbit);
+}
 // Kiosk mode i.e Animation looping
 let setKioskMode = function(){
   globalAnimationLoop = true;
@@ -589,9 +618,17 @@ let setSandboxMode = function(){
   $('#sandboxButton').addClass('active');
   $('#parameterControls').removeClass('hidden');
   $('#playButton').addClass('hidden');
+  if(current > frames.length){
+  void(0);
+  // If already paused do nothing.
+  }
+  else{
+  pause();  
+  }
 }
 kioskButton.onclick = setKioskMode;
 animationButton.onclick = setAnimationMode;
+sandboxButton.onclick = setSandboxMode;
 // Playground --> Animation Controls not rendered.
 // Animation --> PLayground sliders not rendered.
 function nextSequence(){
@@ -599,12 +636,20 @@ function nextSequence(){
     cancelAnimationFrame(globalAnimationId);
     play();
   }
-  else if (current >= frames.length ){
+  else if (current === frames.length ){
       cancelAnimationFrame(globalAnimationId);
       playButton.setAttribute('onclick','play();');
       playButton.innerHTML = '<i class="fa fa-play"></i>';
+      $('#sandboxButton').click();
       // if all frames have been played, ends animation and changes the Pause button to play button.
   }
+  else if (current > frames.length ){
+    cancelAnimationFrame(globalAnimationId);
+    playButton.setAttribute('onclick','play();');
+    playButton.innerHTML = '<i class="fa fa-play"></i>';
+    
+    // if pause button is pressed.
+}
   else{
     globalAnimationId = requestAnimationFrame(frames[current].sequence);
     subtitleText.innerText = frames[current].subtitles; 

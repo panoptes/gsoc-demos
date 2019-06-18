@@ -36,7 +36,9 @@ let current = 0;
 let cachedCurrent = 0;
 let subtitleText = document.getElementById('subtitles');
 let playButton = document.getElementById('playButton');
-
+let kioskButton = document.getElementById('kioskButton');
+let animationButton = document.getElementById('animationButton');
+let globalAnimationLoop = false; //True to enter kiosk mode.
 let updateAnimationParameters = function (r_star = starRadius, relative_planet = planetRelativeRadius, orbital_radius = orbitalRadius, inclination_angle = inclination) {
   globalParameterUpdateFlag = true;
   starRadius = r_star;
@@ -559,9 +561,26 @@ function pause(){
   playButton.setAttribute('onclick','play();');
   playButton.innerHTML = '<i class="fa fa-play"></i>';
 }
-
+// Kiosk mode i.e Animation looping
+let toggleKioskMode = function(){
+  if(globalAnimationLoop){
+    globalAnimationLoop = false;
+    kioskButton.innerHTML = "Start Kiosk";
+  }
+  else{
+    globalAnimationLoop = true;
+    kioskButton.innerHTML = "Exit Kiosk";
+  }
+}
+// Toggle Playground and Animation modes
+// Playground --> Animation Controls not rendered.
+// Animation --> PLayground sliders not rendered.
 function nextSequence(){
-  if (current >= frames.length ){
+  if((current===frames.length) && (globalAnimationLoop)){
+    cancelAnimationFrame(globalAnimationId);
+    play();
+  }
+  else if (current >= frames.length ){
       cancelAnimationFrame(globalAnimationId);
       playButton.setAttribute('onclick','play();');
       playButton.innerHTML = '<i class="fa fa-play"></i>';
@@ -579,4 +598,4 @@ let basePlot = new Image();
 pixelCoords = drawTransitCurve("chartCanvas", obj);
 basePlot.src = chartCanvas.toDataURL();
 
-// globalAnimationId = requestAnimationFrame(zoomSequence);
+

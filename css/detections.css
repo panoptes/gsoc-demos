@@ -110,3 +110,7 @@
     content: none;
 }
 
+.hidden{
+    display:none;
+}
+

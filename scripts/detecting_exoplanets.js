@@ -562,17 +562,36 @@ function pause(){
   playButton.innerHTML = '<i class="fa fa-play"></i>';
 }
 // Kiosk mode i.e Animation looping
-let toggleKioskMode = function(){
-  if(globalAnimationLoop){
-    globalAnimationLoop = false;
-    kioskButton.innerHTML = "Start Kiosk";
-  }
-  else{
-    globalAnimationLoop = true;
-    kioskButton.innerHTML = "Exit Kiosk";
-  }
+let setKioskMode = function(){
+  globalAnimationLoop = true;
+  fullScreenButton.click();
+  $('#kioskButton').addClass('active');
+  $('#animationButton').removeClass('active');
+  $('#sandboxButton').removeClass('active');
+  $('#parameterControls').addClass('hidden');
+  $('#playButton').removeClass('hidden');
 }
+
 // Toggle Playground and Animation modes
+let setAnimationMode  = function(){
+  globalAnimationLoop = false;
+  $('#kioskButton').removeClass('active');
+  $('#animationButton').addClass('active');
+  $('#sandboxButton').removeClass('active');
+  $('#parameterControls').addClass('hidden');
+  $('#playButton').removeClass('hidden');
+}
+
+let setSandboxMode = function(){
+  globalAnimationLoop = false;
+  $('#kioskButton').removeClass('active');
+  $('#animationButton').removeClass('active');
+  $('#sandboxButton').addClass('active');
+  $('#parameterControls').removeClass('hidden');
+  $('#playButton').addClass('hidden');
+}
+kioskButton.onclick = setKioskMode;
+animationButton.onclick = setAnimationMode;
 // Playground --> Animation Controls not rendered.
 // Animation --> PLayground sliders not rendered.
 function nextSequence(){

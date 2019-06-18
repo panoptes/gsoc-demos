@@ -73,15 +73,23 @@
         <div id="subtitlesContainer">
           <p id="subtitles">Subtitles go here </p>
         </div>
-        <div id="animationControls" class="btn-group">
+        <div id="animationControls" class="btn-group dropup">
           <!-- Animation controls go here -->
           <button type="button" class="btn btn-primary col-s-2" id="playButton" onclick="play();"><i class="fa fa-play"></i>
           </button>
           <button type="button" class="btn btn-primary col-xs-2" id="fullScreenButton" onclick="customRequestFullScreen();">Full
             Screen</button>
+          <button class="btn btn-primary dropdown-toggle" type="button" id="modeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Choose Mode
+              </button>
+          <div class="dropdown-menu" aria-labelledby="modeDropdown">
+                <button class="dropdown-item" id="sandboxButton" type="button">Sandbox Mode</button>
+                <button class="dropdown-item" id="kioskButton" type="button">Kiosk Mode</button>
+                <button class="dropdown-item active" id="animationButton" type="button">Animation Mode</button>
+          </div>
         </div>
         <div class="container-fluid">
-        <div id="parameterControls" class="row">
+        <div id="parameterControls" class="row hidden">
           <div class="col-sm-3">
             <br />
             <div class="slider-label">Star Radius</div>
@@ -109,14 +117,7 @@
         </div>
         </div>
       </div>
-      <div id="mode-controls" class="" >
-          <h5 class="">Change Mode</h5> 
-          <div class="btn-group">
-          <button class="btn btn-primary" id="sandboxButton">Sandbox</button>
-          <button class="btn btn-primary" id="kioskButton">Kiosk!</button>    
-          </div>
-      </div>
-    </div>
+</div>
   
   <!-- All text Content -->
   <div class="card mx-auto">

@@ -24,8 +24,6 @@ let cachedParameters = {
 
 let maxZoom = 10;
 let imgsLoaded = 0;
-let scaleX = 1;
-let scaleY = 1;
 // X and Y coordinates of the point to zoom to. Default point is (0,0)
 let originX = 0;
 let originY = 0;
@@ -273,6 +271,8 @@ let zoomSequence = function () {
     drawStarField(ctx,mainCanvas.width,mainCanvas.height,10);
     img.src = mainCanvas.toDataURL();
     nextSequence(); 
+    zx = 1;
+    zy = 1;
     return 0;
   }
   resizeCanvas('mainCanvas');
@@ -488,16 +488,6 @@ let drawSystemAndCurve = function () {
 }
 
 
-let img = new Image();
-// let imgPath = "https://live.staticflickr.com/3820/10563093726_2945540bb8_b.jpg";
-resizeCanvas('mainCanvas');
-drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
-img.src = mainCanvas.toDataURL();
-img.onload = function () {
-  // originX = img.width / 2;
-  // originY = 2 * img.height / 3;
-  
-}
 /* ANIMATION SEQUENCES STORED AS OBJECTS IN AN ARRAY */
 let frames = [];
 // SEQUENCE 1 - ZOOMSEQUENCE
@@ -527,7 +517,7 @@ frames.push({
 });
 // SEQUENCE 6 - INCLINATION SET TO 0 DEG
 frames.push({
-  sequence:function(){resetSystemParaamters();inclinationSlider.noUiSlider.set(0);cachesSystemParamters(false,false,false,true);setTimeout(nextSequence,10000);},
+  sequence:function(){resetSystemParameters();inclinationSlider.noUiSlider.set(0);cacheSystemParameters(false,false,false,true);setTimeout(nextSequence,10000);},
   subtitles: "The decrease in brightness is maximum when the planet orbits at an inclination of 0 degrees -- the planet’s orbit is in line with the view from Earth."
 });
 // SEQUENCE 7 - INCLINATION CHANGES TILL TRANSIT DEPTH IS 0
@@ -537,7 +527,7 @@ frames.push({
 });
 // SEQEUNCE 8 - CHANGE ORBITAL DISTANCE
 frames.push({
-  sequence:function(){resetSystemParamters();orbitalSlider.noUiSlider.set(123);cacheSystemParameters(false,false,true,false);setTimeout(nextSequence,10000);},
+  sequence:function(){resetSystemParameters();orbitalSlider.noUiSlider.set(123);cacheSystemParameters(false,false,true,false);setTimeout(nextSequence,10000);},
   subtitles:"If the planet does cross in front of the star, the distance of the exoplanet from the star doesn’t affect the depth of transit light curve, but it will effect the period (how long between transits) and their duration (how long the transit lasts)."
 });
 // SEQUENCE 9 - INCREASE PLANET RELATIVE RADIUS 
@@ -580,8 +570,8 @@ function pause(){
 
 function cacheSystemParameters(r_star=true,r_planet=true,orbital_radius=true,inclination_angle=true){
   if(r_star){cachedParameters.rStar = starRadius;}
-  if(r_planet){cachedParamters.rPlanet = planetRelativeRadius;}
-  if(orbital_radius){cachedParamters.orbit = orbitalRadius;}
+  if(r_planet){cachedParameters.rPlanet = planetRelativeRadius;}
+  if(orbital_radius){cachedParameters.orbit = orbitalRadius;}
   if(inclination_angle){cachedParameters.inclination = inclination;}
 }
 function resetSystemParameters(){
@@ -633,6 +623,7 @@ sandboxButton.onclick = setSandboxMode;
 // Animation --> PLayground sliders not rendered.
 function nextSequence(){
   if((current===frames.length) && (globalAnimationLoop)){
+    cancelAnimationFrame(starSystemAnimationId);
     cancelAnimationFrame(globalAnimationId);
     play();
   }
@@ -661,5 +652,9 @@ let obj = calcTransitParameters(starRadius, planetRelativeRadius * starRadius, o
 let basePlot = new Image();
 pixelCoords = drawTransitCurve("chartCanvas", obj);
 basePlot.src = chartCanvas.toDataURL();
+let img = new Image();
+resizeCanvas('mainCanvas');
+// drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
+// img.src = mainCanvas.toDataURL();
 
 

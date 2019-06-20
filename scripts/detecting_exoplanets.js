@@ -23,10 +23,6 @@ let cachedParameters = {
 }
 
 let maxZoom = 10;
-let imgsLoaded = 0;
-// X and Y coordinates of the point to zoom to. Default point is (0,0)
-let originX = 0;
-let originY = 0;
 // Initial zoom levels.
 let zx = 1;
 let zy = 1;
@@ -654,7 +650,7 @@ pixelCoords = drawTransitCurve("chartCanvas", obj);
 basePlot.src = chartCanvas.toDataURL();
 let img = new Image();
 resizeCanvas('mainCanvas');
-// drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
-// img.src = mainCanvas.toDataURL();
+drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
+img.src = mainCanvas.toDataURL();
 
 

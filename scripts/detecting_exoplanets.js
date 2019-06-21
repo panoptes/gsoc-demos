@@ -539,17 +539,14 @@ frames.push({
 /* ANIMATION SEQUNECES END */
 /* Play and Pause Animation. Bound to play button */
 function play(){
-  // restart if animation completed 
+   
   if(current>frames.length){
       current=cachedCurrent;
   }
   else if(current===frames.length){
-  cancelAnimationFrame(starSystemAnimationId);
   current = 0;
   cachedCurrent = 0;
-  // 
   }
-  // TO prevent multiple star system animations being called.
   globalAnimationId = requestAnimationFrame(nextSequence);
   playButton.setAttribute('onclick','pause();');
   playButton.innerHTML = '<i class="fa fa-pause"></i>';
@@ -598,12 +595,14 @@ let setAnimationMode  = function(){
 }
 
 let setSandboxMode = function(){
+  cancelAnimationFrame(starSystemAnimationId);
   globalAnimationLoop = false;
   $('#kioskButton').removeClass('active');
   $('#animationButton').removeClass('active');
   $('#sandboxButton').addClass('active');
   $('#parameterControls').removeClass('hidden');
   $('#playButton').addClass('hidden');
+  drawSystemAndCurve();
   if(current > frames.length){
   void(0);
   // If already paused do nothing.
@@ -624,11 +623,15 @@ function nextSequence(){
     play();
   }
   else if (current === frames.length ){
+      cancelAnimationFrame(starSystemAnimationId);
       cancelAnimationFrame(globalAnimationId);
       playButton.setAttribute('onclick','play();');
       playButton.innerHTML = '<i class="fa fa-play"></i>';
       $('#sandboxButton').click();
-      // if all frames have been played, ends animation and changes the Pause button to play button.
+      current = 0;
+      cachedCurrent = 0;
+      // if all frames have been played, ends animation and changes the Pause button to play button. Enters sandbox mode.
+      // Resets animation to restart if play button is pressed again.
   }
   else if (current > frames.length ){
     cancelAnimationFrame(globalAnimationId);
@@ -637,7 +640,9 @@ function nextSequence(){
     
     // if pause button is pressed.
 }
+
   else{
+    if(current === 0){cancelAnimationFrame(starSystemAnimationId);}
     globalAnimationId = requestAnimationFrame(frames[current].sequence);
     subtitleText.innerText = frames[current].subtitles; 
     current++;  

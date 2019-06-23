@@ -199,20 +199,42 @@ else if (document.onwebkitfullscreenchange === null)
   document.onwebkitfullscreenchange = onFullScreenChange;
 
 // Animation Support Methods
-let drawStarField = function (ctx,width,height,zoom) {
-
+let generateRandomStarField = function(){
+  let starfield = {
+    x:[],
+    y:[],
+    radius:[],
+    a:[],
+    index:[],
+  }
+  for(let i=0;i<1000;i++){
+    starfield.x.push(Math.random());
+    starfield.y.push(Math.random());
+    starfield.radius.push(Math.random());
+    starfield.a.push(Math.random());
+    starfield.index.push(Math.random());
+  }
+  return starfield;
+}
+let drawStarField = function (ctx,width,height,zoom,starfield) {
   // ctx.clearRect(0, 0, width, height);
+  let originX = (1-zoom)*width/2;
+  let originY = (1-zoom)*height/2;
+  console.log(originX,originY);
+  console.log(width*zoom,height*zoom)
+  ctx.save();
+  ctx.translate(originX,originY);
   ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, width*zoom, height*zoom);
   for (i = 0; i < 1000/zoom; i++) {
 
-    let x = Math.floor(Math.random() * width * zoom);
-    let y = Math.floor(Math.random() * height * zoom);
-    let radius = Math.floor(Math.random() * 2.5 * zoom );
+    let x = Math.floor(starfield.x[i]* width * zoom);
+    let y = Math.floor(starfield.y[i] * height * zoom);
+    let radius = Math.floor(starfield.radius[i]* 2.5 * zoom );
 
-    let a = Math.random();
+    let a = starfield.a[i];
     let colors = ["rgba(255,255,255,", "rgba(255,165,0,", "rgba(0,128,255,", "rgba(255,255,255,", "rgba(255,255,255,"];
-    let index = Math.round(Math.random() * colors.length);
+    let index = Math.round(starfield.index[i] * colors.length);
     ctx.beginPath();
     ctx.arc(x, y, radius, Math.PI * 2, 0, false);
     ctx.fillStyle = colors[index] + a + ")";
@@ -220,6 +242,7 @@ let drawStarField = function (ctx,width,height,zoom) {
     ctx.closePath();
     // console.log(a);
   }
+  ctx.restore();
 }
 
 let drawSemiOrbit = function (ctx, cx, cy, radius, inclination, direction) {
@@ -264,7 +287,7 @@ let zoomSequence = function () {
   if (zx >= 10) {
     cancelAnimationFrame(globalAnimationId); ctx.resetTransform();
     resizeCanvas('mainCanvas');
-    drawStarField(ctx,mainCanvas.width,mainCanvas.height,10);
+    drawStarField(ctx,mainCanvas.width,mainCanvas.height,10,starfield);
     img.src = mainCanvas.toDataURL();
     nextSequence(); 
     zx = 1;
@@ -272,7 +295,7 @@ let zoomSequence = function () {
     return 0;
   }
   resizeCanvas('mainCanvas');
-  drawStarField(ctx,mainCanvas.width,mainCanvas.height,zx);
+  drawStarField(ctx,mainCanvas.width,mainCanvas.height,zx,starfield);
   img.src = mainCanvas.toDataURL();
   ctx.drawImage(img,0,0);
   drawStarSystem(starRadius,orbitalRadius,inclination,angularPosition,zx/10);
@@ -458,7 +481,7 @@ let drawSystemAndCurve = function () {
   // Main Canvas update
   if ( mainCssH!= mainCanvas.height || mainCssW != mainCanvas.width ) {
     let [h,w] = resizeCanvas('mainCanvas');
-    drawStarField(ctx,w,h,10);
+    drawStarField(ctx,w,h,10,starfield);
     img.src = mainCanvas.toDataURL();
   }
   
@@ -655,7 +678,9 @@ pixelCoords = drawTransitCurve("chartCanvas", obj);
 basePlot.src = chartCanvas.toDataURL();
 let img = new Image();
 resizeCanvas('mainCanvas');
-drawStarField(ctx,mainCanvas.width,mainCanvas.height,1);
+
+let starfield = generateRandomStarField();
+drawStarField(ctx,mainCanvas.width,mainCanvas.height,1,starfield);
 img.src = mainCanvas.toDataURL();
 
 

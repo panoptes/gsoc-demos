@@ -1,0 +1,47 @@
+.card-title{
+    text-align:center;
+}
+
+#mainCard{
+    padding-top:65px;
+}
+
+#mainCanvas{
+    border-radius: 1%;
+    height: 45vw;
+    width:100%;
+    padding: 1px;
+    background: white;
+}
+
+#animationContainer{
+    background:green;
+    padding-top: 65px;
+    /* to compensate for space occupied by navbar */
+    padding-right:22vw;
+    padding-left:22vw;
+}
+
+@media screen and (min-width:768px){
+#animationContainer{
+    background:green;
+    padding-top: 65px;
+    /* to compensate for space occupied by navbar */
+    padding-right:18vw;
+    padding-left:18vw;
+}
+#mainCanvas{
+    height: 28vw;
+    width:56vw;
+}
+}
+/*  */
+
+#animationControls{
+    padding-bottom:5px;
+    padding-top:5px;
+}
+
+#question{
+    margin-bottom:0px;
+}

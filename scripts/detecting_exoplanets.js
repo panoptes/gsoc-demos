@@ -220,8 +220,8 @@ let drawStarField = function (ctx,width,height,zoom,starfield) {
   // ctx.clearRect(0, 0, width, height);
   let originX = (1-zoom)*width/2;
   let originY = (1-zoom)*height/2;
-  console.log(originX,originY);
-  console.log(width*zoom,height*zoom)
+  // console.log(originX,originY);
+  // console.log(width*zoom,height*zoom);
   ctx.save();
   ctx.translate(originX,originY);
   ctx.fillStyle = '#000000';

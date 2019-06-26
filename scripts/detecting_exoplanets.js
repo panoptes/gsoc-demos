@@ -140,17 +140,19 @@ function toggleFullScreen() {
   $('#mainCanvas').addClass('fullscreen');
   $('#chartCanvas').addClass('fullscreen');
   $('#animationControls').addClass('fullscreen');
-  $('#mainCanvas').on('mousemove', hideControls);
-  $('#mainCanvas').on('touchstart', hideControls);
-  $('#chartCanvas').on('mousemove', hideControls);
-  $('#chartCanvas').on('touchstart', hideControls);
+  // $('#mainCanvas').on('mousemove', hideControls);
+  // $('#mainCanvas').on('touchstart', hideControls);
+  // $('#chartCanvas').on('mousemove', hideControls);
+  // $('#chartCanvas').on('touchstart', hideControls);
+  $('#animationContainer').on('mousemove',hideControls);
+  $('#animationContainer').on('touchstart',hideControls);
   hideControls();
 }
 
 let hideControls = function () {
   $('#animationControls').css('display', 'inline-flex');
   clearTimeout(timer);
-  timer = setTimeout(function () { $('#animationControls').fadeOut(); }, 1000);
+  timer = setTimeout(function () { $('#animationControls').fadeOut(); }, 2000);
 }
 
 function customExitFullScreen() {
@@ -161,8 +163,9 @@ function customExitFullScreen() {
   $('#chartCanvas').removeClass('fullscreen');
   $('#animationControls').removeClass('fullscreen');
   clearTimeout(timer);
-  $('#mainCanvas').off();
-  $('#chartCanvas').off();
+  // $('#mainCanvas').off();
+  // $('#chartCanvas').off();
+  $('#animationContainer').off();
   $('#animationControls').css('display', 'inline-flex');
   fullScreenButton.setAttribute('onclick', 'customRequestFullScreen();');
   fullScreenButton.innerHTML = 'Full Screen';

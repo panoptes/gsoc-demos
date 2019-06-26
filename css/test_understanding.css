@@ -2,16 +2,37 @@
     text-align:center;
 }
 .card-deck{
-    padding:10px;
+    padding:5px;
     background-color: white;
 }
 #mainCard{
     padding-top:65px;
 }
-.optionCards{
+.optionCards:hover{
     -webkit-box-shadow: 3px 5px 11px -4px rgba(0,0,0,0.55);
     -moz-box-shadow: 3px 5px 11px -4px rgba(0,0,0,0.55);
      box-shadow: 3px 5px 11px -4px rgba(0,0,0,0.55);
+}
+.optionCards{
+    -webkit-box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
+     box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
+     height:100%;
+     width:100%;
+}
+.optionCanvas{
+    width:100%;
+    height:100%;
+}
+.cardDeckWrapper{
+    padding:0px;
+    margin:auto;
+}
+.card-deck{
+    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-direction: row;
+    -ms-flex-direction: row;
 }
 #mainCanvas{
     border-radius: 1%;
@@ -21,7 +42,7 @@
     background: white;
 }
 
-#animationContainer{
+#questionContainer{
     background:green;
     padding-top: 65px;
     /* to compensate for space occupied by navbar */
@@ -30,7 +51,7 @@
 }
 
 @media screen and (min-width:768px){
-#animationContainer{
+#questionContainer{
     background:green;
     padding-top: 65px;
     /* to compensate for space occupied by navbar */
@@ -39,7 +60,7 @@
 }
 #mainCanvas{
     height: 28vw;
-    width:56vw;
+    width:100%;
 }
 }
 /*  */

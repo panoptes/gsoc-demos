@@ -75,32 +75,26 @@
       </div>
   </div>
     <div id="wrapper">
-    <div id="animationContainer" class="mx-auto">
+    <div id="questionContainer" class="mx-auto">
       <canvas height="300px" width="500px" id="mainCanvas" class="card-img-top"></canvas>
       <div class="card card-body" id="questionDisplay">
         <p id="question" >The Play button turns green when the animation finishes loading.</p>
       </div>
-      <div id="animationControls" class="btn-group">
-        <!-- Animation controls go here -->
-      <button type="button" class="btn btn-primary col-s-2" id ="playButton" onclick="play();"><i class="fa fa-play"></i> </button>
-      <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(1);">1x </button>
-      <button type="button" class="btn btn-primary col-s-2" onclick="setAnimationSpeedFactor(2);">2x </button>
-      <button type="button" class="btn btn-primary col-xs-2" id="fullScreenButton" onclick="customRequestFullScreen();">Full Screen</button>
-      </div>
+     
     </div>  
-    <div class="container-fluid">
+    <div class="container-fluid cardDeckWrapper">
     <div class="card-deck">
-      <div class="card optionCards">
-        <canvas width="200px" height = "200px" class="card-img-top"></canvas>
+      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionOne">
+        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
       </div>
-      <div class="card optionCards">
-        <canvas width="200px" height = "200px" class="card-img-top"></canvas>
+      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionTwo">
+        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
       </div>
-      <div class="card optionCards">
-        <canvas width="200px" height = "200px" class="card-img-top"></canvas>
+      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionThree">
+        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
       </div>
-      <div class="card optionCards">
-          <canvas width="200px" height = "200px" class="card-img-top"></canvas>
+      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionFour">
+          <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
       </div>
     </div>
     </div>
@@ -130,7 +124,7 @@
           <div class="col-xs-12 col-sm-4 col-md-4 footerColumn">
             <h5>Contact</h5>
             <ul class="list-unstyled">
-              <li><a href="info@projectpanoptes.org" title="info@projectpanoptes.org">info@projectpanoptes.org</a></li>
+              <li><a href="mailto:info@projectpanoptes.org" title="info@projectpanoptes.org">info@projectpanoptes.org</a></li>
               <li><a href="https://forum.projectpanoptes.org/" title="PANOPTES forum">Forum</a></li>
               <li><a href="https://projectpanoptes.org/contact" title="Contact form">Contact Form</a></li>
             </ul>

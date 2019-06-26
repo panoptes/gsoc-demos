@@ -64,7 +64,7 @@
 }
 #mainCanvas.fullscreen,#chartCanvas.fullscreen{
     width: 50vw; 
-    height: calc(100vh - 40px); 
+    height: calc(80vh - 30px); 
     position: relative; 
     padding: 0px;
 }
@@ -76,6 +76,7 @@
 #subtitlesContainer.fullscreen{
     height:30px;
 }
+
 /* End of full screen settings */
 
 /* Parameter Slider Controls */

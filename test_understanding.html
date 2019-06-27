@@ -19,7 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>Test Your Understanding</title>
     <!-- Custom Javascript Files  -->
-    
+    <script src="scripts/testing.js" defer></script>
 
   </head>
   <body>
@@ -76,25 +76,26 @@
   </div>
     <div id="wrapper">
     <div id="questionContainer" class="mx-auto">
-      <canvas height="300px" width="500px" id="mainCanvas" class="card-img-top"></canvas>
       <div class="card card-body" id="questionDisplay">
         <p id="question" >The Play button turns green when the animation finishes loading.</p>
       </div>
+      <canvas height="300px" width="500px" id="mainCanvas" class="card-img-top"></canvas>
+      
      
     </div>  
     <div class="container-fluid cardDeckWrapper">
-    <div class="card-deck">
-      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionOne">
-        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
+    <div class="cardDeck">
+      <div class="col-xl-3 col-md-3 col-sm-6 col-6 rounded optionCards" id="optionOne">
+        <canvas width="200px" height = "200px" class="optionCanvas" id="canvasOne"></canvas>
       </div>
-      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionTwo">
-        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-6 rounded optionCards" id="optionTwo">
+        <canvas width="200px" height = "200px" class="optionCanvas" id="canvasTwo"></canvas>
       </div>
-      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionThree">
-        <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-6 rounded optionCards" id="optionThree">
+        <canvas width="200px" height = "200px" class="optionCanvas" id="canvasThree"></canvas>
       </div>
-      <div class="col-md-3 col-sm-6 col-5 rounded optionCards" id="optionFour">
-          <canvas width="200px" height = "200px" class="optionCanvas"></canvas>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-6 rounded optionCards" id="optionFour">
+          <canvas width="200px" height = "200px" class="optionCanvas" id="canvasFour"></canvas>
       </div>
     </div>
     </div>

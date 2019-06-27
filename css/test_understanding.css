@@ -1,9 +1,15 @@
 .card-title{
     text-align:center;
 }
-.card-deck{
+.cardDeck{
     padding:5px;
     background-color: white;
+    width:100%;
+    display:inline-flex;
+    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-direction: row;
+    -ms-flex-direction: row;
 }
 #mainCard{
     padding-top:65px;
@@ -27,29 +33,22 @@
 .cardDeckWrapper{
     padding:0px;
     margin:auto;
-}
-.card-deck{
-    flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-direction: row;
-    -ms-flex-direction: row;
+    background-color: white;
 }
 #mainCanvas{
     border-radius: 1%;
-    height: 45vw;
+    height: 50vw;
     width:100%;
     padding: 1px;
-    background: white;
+    background: darksalmon;
 }
 
 #questionContainer{
     background:green;
-    padding-top: 65px;
-    /* to compensate for space occupied by navbar */
-    padding-right:22vw;
-    padding-left:22vw;
+    padding-right:1vw;
+    padding-left:1vw;
+    padding-top:5px;
 }
-
 @media screen and (min-width:768px){
 #questionContainer{
     background:green;
@@ -62,6 +61,7 @@
     height: 28vw;
     width:100%;
 }
+
 }
 /*  */
 

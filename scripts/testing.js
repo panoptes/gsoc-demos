@@ -1,4 +1,8 @@
 let orbitalPeriod = 2.2; 
+let current = 0;
+let canvasIds = ['canvasOne','canvasTwo','canvasThree','canvasFour'];
+let angularPosition = 0;
+
 function resizeCanvas(canvasId) {
     let mainCanvas = document.getElementById(canvasId);
     let height = $('#' + canvasId).height();
@@ -26,6 +30,7 @@ let drawSemiOrbit = function (ctx, cx, cy, radius, inclination, direction) {
 }
   
 let drawStar = function (ctx, cx, cy, radius) {
+    // console.log(cx,cy,radius);
     starGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
     starGradient.addColorStop(0.15, 'white');
     starGradient.addColorStop(1, 'rgba(248, 148, 6, 1)');
@@ -57,6 +62,7 @@ let drawStarSystem = function (ctx,starRadius,planetRelativeRadius, orbitalRadiu
     // Resizing clears the canvas.
     let centerX = width / 2;
     let centerY = height / 2;
+    // console.log(centerX,centerY);
     ctx.clearRect(0,0,width,height);
     starRadius *= zoom;
     orbitalRadius *= zoom;
@@ -205,24 +211,37 @@ let drawTransitCurve = function (canvasId, transitParameters) {
 
 let questions = [];
 
-let question = {
-    qText:"This is the question",
-    options:[{},{},{},{}],
+questions.push({
+    qType:"transit-curve",
+    qText:"choose the system that corresponds to the transit curve",
+    options:[{
+        starRadius:50,
+        planetRadius:20,
+        orbitalRadius:80,
+        inclination:75
+    },{
+        starRadius:30,
+        planetRadius:20,
+        orbitalRadius:60,
+        inclination:30
+    },{
+        starRadius:40,
+        planetRadius:20,
+        orbitalRadius:70,
+        inclination:0
+    },{
+        starRadius:30,
+        planetRadius:10,
+        orbitalRadius:60,
+        inclination:90
+    }],
     rightOption: 2,
-};
+});
 
-let optionOne = document.getElementById('optionOne');
-let optionTwo = document.getElementById('optionTwo');
-let optionThree = document.getElementById('optionThree');
-let optionFour = document.getElementById('optionFour');
-
-let optionDivs = [optionOne,optionTwo,optionThree,optionFour];
-
-for(let i=0;i<optionDivs.length;i++){
-    optionDivs[i].onclick = function(){
-        answerCheck(optionDiv);
-    }
-}
+function dimensionsFromString(str) {
+    str = str.substr(0, str.indexOf('px'));
+    return Number(str);
+  }
 
 function starParametersObject(r_star,r_planet,orbital_radius,inclination_angle){
     return {
@@ -233,9 +252,40 @@ function starParametersObject(r_star,r_planet,orbital_radius,inclination_angle){
     };
 }
 
-let renderQuestion = function(question,qDisplay){
+let renderQuestion = function(question,qDisplay,qCanvasId,optionCanvasIds){
     // Set question text to question.qText;
     // Render optionCanvas to question.options
     // Render mainCanvas to transit curve of question.rightAnswer
+    if(question.qType==="transit-curve"){
+    let sysParams = question.options[question.rightOption];
+    drawTransitCurve(qCanvasId,calcTransitParameters(sysParams.starRadius,sysParams.planetRadius,sysParams.orbitalRadius,sysParams.inclination));
     qDisplay.innerHTML = question.qText;
+    
+    }
 }
+
+let drawSystems= function () {
+    angularPosition += 2;
+    angularPosition %= 360;
+    let question = questions[current];
+    let sysParams = question.options[question.rightOption];
+    let mainCanvas = document.getElementById('mainCanvas');
+    let mainCssH = Math.floor(dimensionsFromString($('#mainCanvas').css('height')));
+    let mainCssW = Math.floor(dimensionsFromString($('#mainCanvas').css('width')));
+    // Main Canvas update
+    if ( mainCssH!= mainCanvas.height || mainCssW != mainCanvas.width ) {
+      let [h,w] = resizeCanvas('mainCanvas');
+      drawTransitCurve('mainCanvas',calcTransitParameters(sysParams.starRadius,sysParams.planetRadius,sysParams.orbitalRadius,sysParams.inclination));
+    }
+    //option Canvas update
+    let ctx = ""; 
+    let params = {}; 
+    for(let i=0;i<canvasIds.length;i++){
+        ctx = document.getElementById(canvasIds[i]).getContext('2d');
+        params = questions[current].options[i];
+        drawStarSystem(ctx,params.starRadius,params.planetRadius/params.starRadius,params.orbitalRadius,params.inclination,angularPosition);
+    }
+    starSystemAnimationId = requestAnimationFrame(drawSystems);
+  }
+  
+  drawSystems();

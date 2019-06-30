@@ -2,6 +2,8 @@ let orbitalPeriod = 2.2;
 let current = 0;
 let canvasIds = ['canvasOne','canvasTwo','canvasThree','canvasFour'];
 let angularPosition = 0;
+let starSystemAnimationId = 0;
+let started = false;
 
 function resizeCanvas(canvasId) {
     let mainCanvas = document.getElementById(canvasId);
@@ -63,6 +65,7 @@ let drawStarSystem = function (ctx,starRadius,planetRelativeRadius, orbitalRadiu
     let centerX = width / 2;
     let centerY = height / 2;
     // console.log(centerX,centerY);
+    zoom *= height/200;
     ctx.clearRect(0,0,width,height);
     starRadius *= zoom;
     orbitalRadius *= zoom;
@@ -238,6 +241,59 @@ questions.push({
     rightOption: 2,
 });
 
+questions.push({
+  qType:"transit-curve",
+  qText:"choose the system that corresponds to the transit curve",
+  options:[{
+      starRadius:50,
+      planetRadius:20,
+      orbitalRadius:80,
+      inclination:75
+  },{
+      starRadius:30,
+      planetRadius:20,
+      orbitalRadius:60,
+      inclination:0
+  },{
+      starRadius:40,
+      planetRadius:20,
+      orbitalRadius:70,
+      inclination:0
+  },{
+      starRadius:30,
+      planetRadius:10,
+      orbitalRadius:60,
+      inclination:0
+  }],
+  rightOption: 0,
+});
+questions.push({
+  qType:"transit-curve",
+  qText:"choose the system that corresponds to the transit curve",
+  options:[{
+      starRadius:50,
+      planetRadius:20,
+      orbitalRadius:80,
+      inclination:75
+  },{
+      starRadius:30,
+      planetRadius:20,
+      orbitalRadius:60,
+      inclination:0
+  },{
+      starRadius:40,
+      planetRadius:20,
+      orbitalRadius:70,
+      inclination:0
+  },{
+      starRadius:30,
+      planetRadius:10,
+      orbitalRadius:60,
+      inclination:0
+  }],
+  rightOption: 3,
+});
+
 function dimensionsFromString(str) {
     str = str.substr(0, str.indexOf('px'));
     return Number(str);
@@ -253,28 +309,39 @@ function starParametersObject(r_star,r_planet,orbital_radius,inclination_angle){
 }
 
 let renderButton = function(elementId){
-  if(elementId === "nextButton"){
+  switch(elementId){
+    case "nextButton":
     if(current===questions.length - 1){
       // If last question disable next button
       $('#'+elementId).attr('disabled',true);
-    }
+      }
     else{
       // set disabled attribute to false on button
       $('#'+elementId).attr('disabled',false);
-    }
-  }
-  else if (elementId === "prevButton"){
-    if(current === 0 ){
+      }
+    break;
+    case "prevButton":
+      if(current === 0 ){
       // If first question disable "previous" button
       $('#'+elementId).attr('disabled',true);
-    }
-    else{
+      }
+      else{
       $('#'+elementId).attr('disabled',false);
-    }
+      }
+    break;
+    case "startButton":
+      if(started){
+      // If last question disable next button
+      document.getElementById(elementId).innerHTML = "Restart";
+      }    
+      else{
+      document.getElementById(elementId).innerHTML = "Start";
+      }
+    break;  
   }
 } 
 
-let renderCanvas= function () {
+let renderTransitCurveAndSystems= function () {
     angularPosition += 2;
     angularPosition %= 360;
     let question = questions[current];
@@ -299,16 +366,48 @@ let renderCanvas= function () {
         params = questions[current].options[i];
         drawStarSystem(ctx,params.starRadius,params.planetRadius/params.starRadius,params.orbitalRadius,params.inclination,angularPosition);
     }
-    starSystemAnimationId = requestAnimationFrame(renderCanvas);
+    starSystemAnimationId = requestAnimationFrame(renderTransitCurveAndSystems);
   }
   
-  let optionOnClick = function(option,element){
+let optionOnClick = function(option,element){
     if(option == questions[current].rightOption){
-      console.log('You got it right !',element);
+      $('<p>Right Answer</p>').appendTo('#'+element.id);
     }
     else{
-      console.log('You got it wrong :(',element);
+      $('<p>Wrong Answer</p>').appendTo('#'+element.id);
     }
     return 0;
   }
   
+let renderQuestion = function(){
+  document.getElementById('question').innerHTML = questions[current].qText;
+  cancelAnimationFrame(starSystemAnimationId);
+  renderButton('prevButton');
+  renderButton('nextButton');
+  renderButton('startButton');
+  if(questions[current].qType ==="transit-curve"){
+    renderTransitCurveAndSystems();
+  }
+  else if(questions[current].qType ==="star-system"){
+    renderSystemAndTransitCurves();
+  }
+}  
+
+let begin = function(){
+  cancelAnimationFrame(starSystemAnimationId);
+  current = 0;
+  started = true;
+  renderQuestion();
+}
+
+let next = function(){
+  cancelAnimationFrame(starSystemAnimationId);
+  current+=1;
+  renderQuestion();
+}
+
+let previous = function(){
+  cancelAnimationFrame(starSystemAnimationId);
+  current-=1;
+  renderQuestion();
+}

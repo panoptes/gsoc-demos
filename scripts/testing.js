@@ -252,19 +252,29 @@ function starParametersObject(r_star,r_planet,orbital_radius,inclination_angle){
     };
 }
 
-let renderQuestion = function(question,qDisplay,qCanvasId,optionCanvasIds){
-    // Set question text to question.qText;
-    // Render optionCanvas to question.options
-    // Render mainCanvas to transit curve of question.rightAnswer
-    if(question.qType==="transit-curve"){
-    let sysParams = question.options[question.rightOption];
-    drawTransitCurve(qCanvasId,calcTransitParameters(sysParams.starRadius,sysParams.planetRadius,sysParams.orbitalRadius,sysParams.inclination));
-    qDisplay.innerHTML = question.qText;
-    
+let renderButton = function(elementId){
+  if(elementId === "nextButton"){
+    if(current===questions.length - 1){
+      // If last question disable next button
+      $('#'+elementId).attr('disabled',true);
     }
-}
+    else{
+      // set disabled attribute to false on button
+      $('#'+elementId).attr('disabled',false);
+    }
+  }
+  else if (elementId === "prevButton"){
+    if(current === 0 ){
+      // If first question disable "previous" button
+      $('#'+elementId).attr('disabled',true);
+    }
+    else{
+      $('#'+elementId).attr('disabled',false);
+    }
+  }
+} 
 
-let drawSystems= function () {
+let renderCanvas= function () {
     angularPosition += 2;
     angularPosition %= 360;
     let question = questions[current];
@@ -275,6 +285,10 @@ let drawSystems= function () {
     // Main Canvas update
     if ( mainCssH!= mainCanvas.height || mainCssW != mainCanvas.width ) {
       let [h,w] = resizeCanvas('mainCanvas');
+      resizeCanvas('canvasOne');
+      resizeCanvas('canvasTwo');
+      resizeCanvas('canvasThree');
+      resizeCanvas('canvasFour');
       drawTransitCurve('mainCanvas',calcTransitParameters(sysParams.starRadius,sysParams.planetRadius,sysParams.orbitalRadius,sysParams.inclination));
     }
     //option Canvas update
@@ -285,7 +299,16 @@ let drawSystems= function () {
         params = questions[current].options[i];
         drawStarSystem(ctx,params.starRadius,params.planetRadius/params.starRadius,params.orbitalRadius,params.inclination,angularPosition);
     }
-    starSystemAnimationId = requestAnimationFrame(drawSystems);
+    starSystemAnimationId = requestAnimationFrame(renderCanvas);
   }
   
-  drawSystems();
+  let optionOnClick = function(option,element){
+    if(option == questions[current].rightOption){
+      console.log('You got it right !',element);
+    }
+    else{
+      console.log('You got it wrong :(',element);
+    }
+    return 0;
+  }
+  

@@ -52,7 +52,6 @@
 @media screen and (min-width:768px){
 #questionContainer{
     background:green;
-    padding-top: 65px;
     /* to compensate for space occupied by navbar */
     padding-right:18vw;
     padding-left:18vw;

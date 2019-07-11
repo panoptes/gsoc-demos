@@ -261,7 +261,8 @@ function customRequestFullScreen(){
         animContainer.msRequestFullscreen();
       }
       
-    screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen);    
+    screen.orientation.lock('landscape').then(toggleFullScreen,toggleFullScreen); 
+    // If promise fulfilled or rejected, call toggleFullScreen()   
     $('#fullScreenButton').attr('onclick','customExitFullScreen();');
     $('#fullScreenButton').html('Exit Full Screen');
 }

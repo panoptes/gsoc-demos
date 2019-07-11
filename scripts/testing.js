@@ -3,6 +3,8 @@ let current = 0;
 let canvasIds = ['canvasOne','canvasTwo','canvasThree','canvasFour'];
 let angularPosition = 0;
 let starSystemAnimationId = 0;
+let questionRendered = false; 
+// Keeps track if question is rendered to enable option checking.
 let started = false;
 
 function resizeCanvas(canvasId) {
@@ -370,14 +372,21 @@ let renderTransitCurveAndSystems= function () {
   }
   
 let optionOnClick = function(option,element){
+  if(questionRendered){
+    selector = '#'+element.id+'>p.optionText';
     if(option == questions[current].rightOption){
-      $('<p>Right Answer</p>').appendTo('#'+element.id);
+      $(selector).html("<i class='fas fa-check text-success'></i> Right Answer");
+      $('#'+element.id).addClass('rightAnswerClick');
     }
     else{
-      $('<p>Wrong Answer</p>').appendTo('#'+element.id);
+      $(selector).html("<i class='fas fa-times text-danger'></i> Wrong Answer");
+      $('#'+element.id).addClass('wrongAnswerClick');
     }
+    $(selector).removeClass('hidden');
     return 0;
   }
+  // If question not rendered do nothing.
+}
   
 let renderQuestion = function(){
   document.getElementById('question').innerHTML = questions[current].qText;
@@ -385,6 +394,10 @@ let renderQuestion = function(){
   renderButton('prevButton');
   renderButton('nextButton');
   renderButton('startButton');
+  $('.optionCards').removeClass('rightAnswerClick');
+  $('.optionCards').removeClass('wrongAnswerClick');
+  questionRendered = true;
+  $('p.optionText').addClass('hidden');
   if(questions[current].qType ==="transit-curve"){
     renderTransitCurveAndSystems();
   }

@@ -63,7 +63,18 @@
 
 }
 /*  */
-
+.rightAnswerClick{
+    border-style: solid;
+    border-width: 0.8px;
+    border-color: #28a745;
+    /* Bootstrap green is #28a745 */
+}
+.wrongAnswerClick{
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: #dc3545;
+    /* Bootstrap green is #28a745 */
+}
 #animationControls{
     padding-bottom:5px;
     padding-top:5px;
@@ -71,4 +82,8 @@
 
 #question{
     margin-bottom:0px;
+}
+
+.hidden{
+    display: none;
 }

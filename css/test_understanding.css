@@ -3,7 +3,7 @@
 }
 .cardDeck{
     padding:5px;
-    background-color: white;
+    background-color: grey;
     width:100%;
     display:inline-flex;
     flex-wrap: wrap;
@@ -23,8 +23,11 @@
     -webkit-box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
      box-shadow: 3px 5px 11px -8px rgba(0,0,0,0.55);
+     background-color: white;
      height:100%;
      width:100%;
+     margin-top:10px;
+     margin-right:10px;
 }
 .optionCanvas{
     width:100%;
@@ -33,7 +36,7 @@
 .cardDeckWrapper{
     padding:0px;
     margin:auto;
-    background-color: white;
+    background-color: grey;
 }
 #mainCanvas{
     border-radius: 1%;
@@ -44,14 +47,14 @@
 }
 
 #questionContainer{
-    background:green;
+    background: grey;
     padding-right:1vw;
     padding-left:1vw;
     padding-top:5px;
 }
 @media screen and (min-width:768px){
 #questionContainer{
-    background:green;
+    background:grey;
     /* to compensate for space occupied by navbar */
     padding-right:18vw;
     padding-left:18vw;
@@ -60,7 +63,10 @@
     height: 28vw;
     width:100%;
 }
-
+.optionCards{
+    margin-top:5px;
+    margin-right:5px;
+}
 }
 /*  */
 .rightAnswerClick{

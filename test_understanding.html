@@ -70,25 +70,22 @@
     <div class="card-body">
       <h3 class="card-title">Test your understanding</h3>
       <div class="list-group">
-        <h5 class="list-group-item list-group-item-action pageContent">Animation UI Guide</h5>
+        <h5 class="list-group-item list-group-item-action pageContent">Quiz Guide</h5>
         <div class="card card-body">
-          <p>The Play button turns green when the animation finishes loading.</p>
-          <p>The 1x and 2x Buttons control the animation speed.</p>
-          <p>The Full screen button expands the animation to fit the screen. To exit full screen use 'Esc' key or 'F11'
-            key on Desktop or drag down and press 'back' key on touchscreens.</p>
+          <p>To begin, click the start button</p>
+          <p>Use the Prev and Next buttons to move through the questions. To go back to the beginning, click restart.</p>
         </div>
-
-
       </div>
 
 
 
     </div>
   </div>
+  
   <div id="wrapper">
     <div id="questionContainer" class="mx-auto">
       <div class="card card-body" id="questionDisplay">
-        <p id="question">The Play button turns green when the animation finishes loading.</p>
+        <p id="question">The question will be displayed here.</p>
       </div>
       <canvas height="300px" width="500px" id="mainCanvas" class="card-img-top"></canvas>
 
@@ -112,8 +109,7 @@
           <canvas width="200px" height="200px" class="optionCanvas" id="canvasFour"></canvas>
           <p class="optionText hidden">Right Answer</p>
         </div>
-      </div>
-      <div class="btn-group">
+      </div><div class="btn-group">
         <button type="button" class="btn btn-primary" id="prevButton" onclick="previous();" disabled><i
             class="fas fa-arrow-left"></i>
           Prev.</button>
@@ -122,6 +118,7 @@
         <button type="button" class="btn btn-primary" id="nextButton" onclick="next();" disabled>Next
           <i class="fas fa-arrow-right"></i></button></div>
     </div>
+      
     <a href="detecting_exoplanets.html" class="list-group-item list-group-item-action">Back: Detecting Exoplanets</a>
   </div>
 

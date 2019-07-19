@@ -11,7 +11,7 @@ let planetRelativeRadius = 0.1;
 let inclination = 30;
 let orbitalRadius = 1.5 * starRadius;
 let angularPosition = 0; // planet position on the orbit. 0 to 360 degrees.
-let orbitalPeriod = 2.2; // Days
+let orbitalPeriod = 22.4; // Days
 let starGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, starRadius);
 starGradient.addColorStop(0.15, 'white');
 starGradient.addColorStop(1, 'rgba(248, 148, 6, 1)');
@@ -424,6 +424,9 @@ let drawTransitCurve = function (canvasId, transitParameters) {
   let startX = width / 2 - ctx.measureText(text).width / 2;
   ctx.fillText(text, startX, 2 * paddingTopBottom / 3);
   // Transit Light Curve drawing to chartCanavs
+  orbitalPeriod = 22.4 * Math.pow(orbitalRadius/112.5,1.5);
+  // Orbital Period and Radius are related as orbitalPeriod^2 = orbitalRadius^3
+  // Using proportions and an initial assumption that 22.4 days for radius 112.5 units.
   relativeBrightness = transitParameters.relativeBrightness;
   let xAxisPoints = 2 * (relativeBrightness.length - 1);
   for (let index = 0; index <= xAxisPoints; index++) {

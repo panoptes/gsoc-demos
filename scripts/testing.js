@@ -1,4 +1,4 @@
-let orbitalPeriod = 2.2; 
+let orbitalPeriod = 22.4; 
 let current = 0;
 let canvasIds = ['canvasOne','canvasTwo','canvasThree','canvasFour'];
 let angularPosition = 0;
@@ -215,10 +215,10 @@ let drawTransitCurve = function (canvasId, transitParameters) {
 }
 
 let questions = [];
-
+// Question 1
 questions.push({
     qType:"transit-curve",
-    qText:"choose the system that corresponds to the transit curve",
+    qText:"Choose the star system that best represents the observed transit light curve",
     options:[{
         starRadius:50,
         planetRadius:20,
@@ -240,12 +240,12 @@ questions.push({
         orbitalRadius:60,
         inclination:90
     }],
-    rightOption: 2,
+    rightOption: 3,
 });
-
+// Question 2
 questions.push({
   qType:"transit-curve",
-  qText:"choose the system that corresponds to the transit curve",
+  qText:"Choose the star system that best represents the observed transit light curve",
   options:[{
       starRadius:50,
       planetRadius:20,
@@ -269,6 +269,7 @@ questions.push({
   }],
   rightOption: 0,
 });
+// Question 3
 questions.push({
   qType:"transit-curve",
   qText:"choose the system that corresponds to the transit curve",
@@ -281,12 +282,12 @@ questions.push({
       starRadius:30,
       planetRadius:20,
       orbitalRadius:60,
-      inclination:0
+      inclination:90
   },{
       starRadius:40,
       planetRadius:20,
       orbitalRadius:70,
-      inclination:0
+      inclination:80
   },{
       starRadius:30,
       planetRadius:10,
@@ -295,6 +296,34 @@ questions.push({
   }],
   rightOption: 3,
 });
+// Question 4
+questions.push({
+  qType:"transit-curve",
+  qText:"choose the system that corresponds to the transit curve",
+  options:[{
+      starRadius:50,
+      planetRadius:10,
+      orbitalRadius:80,
+      inclination:75
+  },{
+      starRadius:50,
+      planetRadius:10,
+      orbitalRadius:70,
+      inclination:90
+  },{
+      starRadius:50,
+      planetRadius:3,
+      orbitalRadius:70,
+      inclination:30
+  },{
+      starRadius:50,
+      planetRadius:20,
+      orbitalRadius:80,
+      inclination:30
+  }],
+  rightOption: 3,
+});
+// Question 5
 
 function dimensionsFromString(str) {
     str = str.substr(0, str.indexOf('px'));

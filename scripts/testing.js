@@ -241,6 +241,7 @@ questions.push({
         inclination:90
     }],
     rightOption: 3,
+    hintText:"There is no transit happening here. So this is not the right answer.",
 });
 // Question 2
 questions.push({
@@ -268,6 +269,7 @@ questions.push({
       inclination:0
   }],
   rightOption: 0,
+  hintText:"The transit shape indicates that the orbit is inclined from our point of view.",
 });
 // Question 3
 questions.push({
@@ -295,6 +297,7 @@ questions.push({
       inclination:0
   }],
   rightOption: 3,
+  hintText:"The shape of the transit curve indicates that the planet obscures the star for a reasonable period.",
 });
 // Question 4
 questions.push({
@@ -322,6 +325,7 @@ questions.push({
       inclination:30
   }],
   rightOption: 3,
+  hintText:"The transit depth is quite large. Take that into account.",
 });
 // Question 5
 
@@ -404,11 +408,11 @@ let optionOnClick = function(option,element){
   if(questionRendered){
     selector = '#'+element.id+'>p.optionText';
     if(option == questions[current].rightOption){
-      $(selector).html("<i class='fas fa-check text-success'></i> Right Answer");
+      $(selector).html("<i class='fas fa-check text-success'></i> <b>Right Answer</b>");
       $('#'+element.id).addClass('rightAnswerClick');
     }
     else{
-      $(selector).html("<i class='fas fa-times text-danger'></i> Wrong Answer");
+      $(selector).html("<i class='fas fa-times text-danger'></i> <b>Wrong Answer</b><br>"+questions[current].hintText);
       $('#'+element.id).addClass('wrongAnswerClick');
     }
     $(selector).removeClass('hidden');

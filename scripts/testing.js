@@ -256,14 +256,14 @@ questions.push({
       starRadius:30,
       planetRadius:20,
       orbitalRadius:60,
-      inclination:0
+      inclination:90
   },{
       starRadius:40,
       planetRadius:20,
       orbitalRadius:70,
       inclination:0
   },{
-      starRadius:30,
+      starRadius:40,
       planetRadius:10,
       orbitalRadius:60,
       inclination:0
@@ -283,8 +283,8 @@ questions.push({
   },{
       starRadius:30,
       planetRadius:20,
-      orbitalRadius:60,
-      inclination:90
+      orbitalRadius:51,
+      inclination:0
   },{
       starRadius:40,
       planetRadius:20,
@@ -293,7 +293,7 @@ questions.push({
   },{
       starRadius:30,
       planetRadius:10,
-      orbitalRadius:60,
+      orbitalRadius:75,
       inclination:0
   }],
   rightOption: 3,
